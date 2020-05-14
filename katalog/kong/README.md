@@ -20,6 +20,7 @@ Kong Ingress Controller is an Ingress Controller for [KONG](https://konghq.com/)
 Fury distribution Kong is deployed with following configuration:
 
 - Metrics are scraped by Prometheus every `10s`
+- Service is configured as `NodePort` and not `LoadBalancer`
 
 
 ## Deployment
@@ -36,7 +37,7 @@ Followings Prometheus [alerts](https://prometheus.io/docs/prometheus/latest/conf
 ### ingress-kong.rules
 | Parameter | Description | Severity | Interval |
 |------|-------------|----------|:-----:|
-| KongIngressDown | This alert fires if Promethes target discovery was not able to reach kong ingress metrics in the last 15 minutes. | critical | 15m |
+| KongIngressDown | This alert fires if Prometheus target discovery was not able to reach kong ingress metrics in the last 15 minutes. | critical | 15m |
 
 
 ## License

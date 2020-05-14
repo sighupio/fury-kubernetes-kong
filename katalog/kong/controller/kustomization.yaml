@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+  - github.com/Kong/kubernetes-ingress-controller/deploy/manifests/base?ref=0.8.1
+
+namespace: kong

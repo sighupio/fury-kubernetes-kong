@@ -5,6 +5,7 @@ metadata:
     prometheus: k8s
     role: alert-rules
   name: ingress-kong-k8s-rules
+  namespace: kong
 spec:
   groups:
     - name: ingress-kong.rules

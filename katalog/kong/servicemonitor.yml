@@ -4,6 +4,7 @@ metadata: # Labels and name of the ServiceMonitor
   labels:
     app: ingress-kong
   name: ingress-kong
+  namespace: kong
 spec:
   endpoints: # which port of the pods to scrape
     - interval: 10s
