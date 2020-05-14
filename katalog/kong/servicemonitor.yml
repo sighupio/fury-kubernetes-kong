@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata: # Labels and name of the ServiceMonitor
+  labels:
+    app: ingress-kong
+  name: ingress-kong
+spec:
+  endpoints: # which port of the pods to scrape
+    - interval: 10s
+      port: metrics
+  jobLabel: ingress-kong
+  namespaceSelector: # filtering namespace
+    matchNames:
+      - kong
+  selector: # pod labels to match
+    matchLabels:
+      app: ingress-kong
