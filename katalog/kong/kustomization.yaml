@@ -10,3 +10,5 @@ resources:
   - validation-service.yaml
   - kong-ingress-dbless.yaml
   - servicemonitor.yml
+
+namespace: kong

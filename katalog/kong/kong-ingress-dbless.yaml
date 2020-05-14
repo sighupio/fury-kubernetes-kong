@@ -5,7 +5,6 @@ metadata:
   labels:
     app: ingress-kong
   name: ingress-kong
-  namespace: kong
 spec:
   replicas: 1
   selector:
