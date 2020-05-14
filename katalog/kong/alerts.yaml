@@ -1,0 +1,22 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    prometheus: k8s
+    role: alert-rules
+  name: ingress-kong-k8s-rules
+spec:
+  groups:
+    - name: ingress-kong.rules
+      rules:
+        - alert: KongIngressDown
+          annotations:
+            message: 'Kong Ingress Controller has disapperead from Prometheus
+          target discovery.'
+            doc: "This alert fires if Prometheus target discovery was not able to
+          reach ingress-kong-metrics in the last 15 minutes."
+          expr: |
+            absent(up{job="ingress-kong-metrics"} == 1)
+          for: 15m
+          labels:
+            severity: critical

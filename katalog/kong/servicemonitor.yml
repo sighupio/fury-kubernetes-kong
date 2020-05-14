@@ -8,7 +8,7 @@ spec:
   endpoints: # which port of the pods to scrape
     - interval: 10s
       port: metrics
-  jobLabel: ingress-kong
+  jobLabel: ingress-kong-metrics
   namespaceSelector: # filtering namespace
     matchNames:
       - kong
