@@ -23,6 +23,7 @@ metadata:
   name: ingress-kong-metrics
   labels:
     app: ingress-kong
+  namespace: kong
 spec:
   selector:
     app: ingress-kong

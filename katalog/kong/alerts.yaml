@@ -18,6 +18,6 @@ spec:
           reach ingress-kong-metrics in the last 15 minutes."
           expr: |
             absent(up{job="ingress-kong-metrics"} == 1)
-          for: 15m
+          for: 5m
           labels:
             severity: critical
