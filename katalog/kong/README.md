@@ -1,6 +1,6 @@
 # Kong ingress controller
 
-Kong Ingress Controller is an Ingress Controller for [KONG](https://konghq.com/), it manages Kong proxy in a Kubernetes native manner. This package deploys Ingress Controller for clusters created with kubeadm.
+Kong Ingress Controller is an Ingress Controller for [KONG](https://konghq.com/).
 
 
 ## Requirements
