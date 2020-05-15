@@ -16,3 +16,17 @@ spec:
   selector: # pod labels to match
     matchLabels:
       app: ingress-kong
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ingress-kong-metrics
+  labels:
+    app: ingress-kong
+spec:
+  selector:
+    app: ingress-kong
+  ports:
+    - name: metrics
+      port: 9542
+      targetPort: metrics
