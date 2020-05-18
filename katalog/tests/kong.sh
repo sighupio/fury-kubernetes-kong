@@ -55,6 +55,11 @@ set -o pipefail
   [[ "$status" -eq 0 ]]
 }
 
+@test "Wait for Kong kong reloading...." {
+  info
+  sleep 5
+}
+
 @test "Check that Petstore example app is working via GET /pet/1 route" {
   info
   test() {
