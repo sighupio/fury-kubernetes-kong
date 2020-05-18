@@ -6,6 +6,8 @@ bases:
 resources:
   - servicemonitor.yml
   - alerts.yaml
+  - kong-ingress-dbless-ds.yml
 
 patchesStrategicMerge:
   - service.yaml
+  - kong-ingress-dbless.yml
