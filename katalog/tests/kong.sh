@@ -45,7 +45,7 @@ set -o pipefail
 @test "Check that Petstore example app is working via GET /pet/1 route" {
   info
   test() {
-    http_code=$(curl "http://${INSTANCE_IP}:31081/pet/1" -s -o /dev/null -w "%{http_code}")
+    http_code=$(curl "http://${INSTANCE_IP}:80/pet/1" -s -o /dev/null -w "%{http_code}")
     if [ "${http_code}" -ne "200" ]; then return 1; fi
   }
   run test
@@ -77,6 +77,17 @@ set -o pipefail
   info
   test() {
     http_code=$(echo '{"id": 1,"username": "user","firstName": "user","lastName": "user","email": "user@user.tld","password": "user","phone": "1234","userStatus": 0 }' | curl -d @- http://${INSTANCE_IP}:80/user  -u user:123456 --header "Content-Type:application/json" -s -o /dev/null -w "%{http_code}")
+    if [ "${http_code}" -ne "200" ]; then return 1; fi
+  }
+  run test
+  [[ "$status" -eq 0 ]]
+}
+
+
+@test "Check that Petstore example app is working via GET /store/inventory route and host awesome-kong.io" {
+  info
+  test() {
+    http_code=$(curl "http://${INSTANCE_IP}:80/store/inventory" -H 'host: awesome-kong.io' -s -o /dev/null -w "%{http_code}")
     if [ "${http_code}" -ne "200" ]; then return 1; fi
   }
   run test
