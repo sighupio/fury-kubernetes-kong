@@ -20,9 +20,10 @@ Kong Ingress Controller is an Ingress Controller for [KONG](https://konghq.com/)
 Fury distribution Kong is deployed with following configuration:
 
 - Metrics are scraped by Prometheus every `10s`
+- Kong ingress controller is a DaemonSet and not a Deployment
 - Service is configured as `NodePort` on ports:
-    - 31081
-    - 31444
+    - `31081` for HTTP
+    - `31444` for HTTPS
 
 
 ## Deployment
