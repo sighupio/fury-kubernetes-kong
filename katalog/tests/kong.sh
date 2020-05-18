@@ -61,7 +61,7 @@ set -o pipefail
     http_code=$(curl "http://${INSTANCE_IP}/pet/1" -s -o /dev/null -w "%{http_code}")
     if [ "${http_code}" -ne "200" ]; then return 1; fi
   }
-  loop_it test 5 2
+  loop_it test 30 2
   status=${loop_it_result}
   [[ "$status" -eq 0 ]]
 }
@@ -72,7 +72,7 @@ set -o pipefail
     http_code=$(echo '{"stuff": 1}' | curl -d @- "http://${INSTANCE_IP}/pet/1" --header "Content-Type:application/json" -s -o /dev/null -w "%{http_code}")
     if [ "${http_code}" -ne "404" ]; then return 1; fi
   }
-  loop_it test 5 2
+  loop_it test 30 2
   status=${loop_it_result}
   [[ "$status" -eq 0 ]]
 }
@@ -83,7 +83,7 @@ set -o pipefail
     for i in {1..5}; do http_code=$(curl "http://${INSTANCE_IP}/pet/1" -s -o /dev/null -w "%{http_code}"); done
     if [ "${http_code}" -ne "429" ]; then return 1; fi
   }
-  loop_it test 5 2
+  loop_it test 30 2
   status=${loop_it_result}
   [[ "$status" -eq 0 ]]
 }
@@ -95,7 +95,7 @@ set -o pipefail
     http_code=$(echo '{"id": 1,"username": "user","firstName": "user","lastName": "user","email": "user@user.tld","password": "user","phone": "1234","userStatus": 0 }' | curl -d @- http://${INSTANCE_IP}/user  -u user:123456 --header "Content-Type:application/json" -s -o /dev/null -w "%{http_code}")
     if [ "${http_code}" -ne "200" ]; then return 1; fi
   }
-  loop_it test 5 2
+  loop_it test 30 2
   status=${loop_it_result}
   [[ "$status" -eq 0 ]]
 }
@@ -107,7 +107,7 @@ set -o pipefail
     http_code=$(curl "http://${INSTANCE_IP}/store/inventory" -H 'host: awesome-kong.io' -s -o /dev/null -w "%{http_code}")
     if [ "${http_code}" -ne "200" ]; then return 1; fi
   }
-  loop_it test 5 2
+  loop_it test 30 2
   status=${loop_it_result}
   [[ "$status" -eq 0 ]]
 }
