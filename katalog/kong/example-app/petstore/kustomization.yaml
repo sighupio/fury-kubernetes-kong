@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: petstore
+
+resources:
+  - petstore-deployment.yml
+  - petstore-service.yml
+  - petstore-public-ingress.yml
+  - petstore-private-ingress.yml
+  - kong-plugin-request-id.yml
+  - kong-plugin-rate-limit.yml
+  - kong-configuration-proxy.yml
+  - kong-consumer-basic-auth.yml
+  - kong-plugin-basic-auth.yml
+  - kong-configuration-route-customization.yml
+  - kong-plugin-prometheus.yml
+  - ns.yml

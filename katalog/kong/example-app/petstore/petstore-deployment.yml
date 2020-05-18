@@ -1,0 +1,23 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petstore
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: petstore
+  template:
+    metadata:
+      labels:
+        app: petstore
+    spec:
+      containers:
+        - name: petstore
+          image: swaggerapi/petstore
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+

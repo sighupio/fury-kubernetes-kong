@@ -31,6 +31,19 @@ set -o pipefail
   status=${loop_it_result}
   [[ "$status" -eq 0 ]]
 }
+
+
+@test "Deploy Petstore example app" {
+  info
+  deploy() {
+    kaction katalog/kong/example-app/petstore apply
+  }
+  run deploy
+  [[ "$status" -eq 0 ]]
+}
+
+
+
 #
 ## [ALLOW] Allowed by Gatekeeper Kubernetes requests
 #

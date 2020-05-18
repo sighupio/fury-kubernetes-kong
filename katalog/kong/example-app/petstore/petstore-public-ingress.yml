@@ -1,0 +1,23 @@
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: public-petstore
+  annotations:
+    konghq.com/plugins: request-id,rate-limiting,prometheus
+    kubernetes.io/ingress.class: 'kong'
+    configuration.konghq.com: route-customization
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /pet
+            backend:
+              serviceName: petstore
+              servicePort: 8080
+    - http:
+        paths:
+          - path: /store
+            backend:
+              serviceName: petstore
+              servicePort: 8080

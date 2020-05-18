@@ -1,0 +1,9 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongIngress
+metadata:
+  name: route-customization
+  annotations:
+    kubernetes.io/ingress.class: 'kong'
+route:
+  methods:
+    - GET
