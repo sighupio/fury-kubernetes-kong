@@ -15,8 +15,10 @@ steps:
         path: /shared
     depends_on: [ clone ]
     settings:
-      action: cluster-116
+      action: custom-cluster-116
       pipeline_id: cluster-116
+      local_kind_config_path: katalog/tests/config/kind-config
+      cluster_version: '1.16.9'
       instance_path: /shared
       aws_default_region:
         from_secret: aws_region
@@ -35,6 +37,7 @@ steps:
         path: /shared
     depends_on: [ init ]
     commands:
+      - export INSTANCE_IP=$(cat /shared/machine/ip)
       - export KUBECONFIG=/shared/kube/kubeconfig-116
       - bats -t katalog/tests/kong.sh
 
@@ -79,15 +82,17 @@ platform:
 
 steps:
   - name: init
-    image: quay.io/sighup/e2e-testing-drone-plugin:v0.2.1
+    image: quay.io/sighup/e2e-testing-drone-plugin:v0.3.2
     pull: always
     volumes:
       - name: shared
         path: /shared
     depends_on: [ clone ]
     settings:
-      action: cluster-115
+      action: custom-cluster-115
       pipeline_id: cluster-115
+      local_kind_config_path: katalog/tests/config/kind-config
+      cluster_version: '1.15.11'
       instance_path: /shared
       aws_default_region:
         from_secret: aws_region
@@ -106,6 +111,7 @@ steps:
         path: /shared
     depends_on: [ init ]
     commands:
+      - export INSTANCE_IP=$(cat /shared/machine/ip)
       - export KUBECONFIG=/shared/kube/kubeconfig-115
       - bats -t katalog/tests/kong.sh
 
@@ -149,15 +155,17 @@ platform:
 
 steps:
   - name: init
-    image: quay.io/sighup/e2e-testing-drone-plugin:v0.2.1
+    image: quay.io/sighup/e2e-testing-drone-plugin:v0.3.2
     pull: always
     volumes:
       - name: shared
         path: /shared
     depends_on: [ clone ]
     settings:
-      action: cluster-114
+      action: custom-cluster-114
       pipeline_id: cluster-114
+      local_kind_config_path: katalog/tests/config/kind-config
+      cluster_version: '1.14.10'
       instance_path: /shared
       aws_default_region:
         from_secret: aws_region
@@ -176,12 +184,13 @@ steps:
         path: /shared
     depends_on: [ init ]
     commands:
+      - export INSTANCE_IP=$(cat /shared/machine/ip)
       - export KUBECONFIG=/shared/kube/kubeconfig-114
       - bats -t katalog/tests/kong.sh
 
 
   - name: destroy
-    image: quay.io/sighup/e2e-testing-drone-plugin:v0.2.1
+    image: quay.io/sighup/e2e-testing-drone-plugin:v0.3.2
     pull: always
     depends_on: [ e2e ]
     settings:

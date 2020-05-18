@@ -7,6 +7,7 @@ resources:
   - petstore-deployment.yml
   - petstore-service.yml
   - petstore-public-ingress.yml
+  - petstore-public-ingress-2.yml
   - petstore-private-ingress.yml
   - kong-plugin-request-id.yml
   - kong-plugin-rate-limit.yml

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: petstore
-          image: swaggerapi/petstore
+          image: swaggerapi/petstore:1.0.5
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
