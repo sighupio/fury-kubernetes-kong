@@ -49,6 +49,7 @@ set -o pipefail
     for state in $status; do
       if [ "${state}" != "Running" ]; then return 1; fi
     done
+  }
   loop_it test 30 2
   status=${loop_it_result}
   [[ "$status" -eq 0 ]]
