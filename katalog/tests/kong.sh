@@ -42,6 +42,19 @@ set -o pipefail
   [[ "$status" -eq 0 ]]
 }
 
+@test "Wait for Petstore app" {
+  info
+  test(){
+    status=$(kubectl get pods -n petstore -l app=petstore -o jsonpath="{.items[*].status.phase}")
+    for state in $status; do
+      if [ "${state}" != "Running" ]; then return 1; fi
+    done
+  }
+  loop_it test 30 2
+  status=${loop_it_result}
+  [[ "$status" -eq 0 ]]
+}
+
 @test "Check that Petstore example app is working via GET /pet/1 route" {
   info
   test() {
