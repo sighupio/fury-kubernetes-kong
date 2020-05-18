@@ -44,4 +44,4 @@ Followings Prometheus [alerts](https://prometheus.io/docs/prometheus/latest/conf
 
 ## License
 
-For license details please see [LICENSE](../.../LICENSE)
+For license details please see [LICENSE](../../LICENSE)
