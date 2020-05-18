@@ -42,105 +42,47 @@ set -o pipefail
   [[ "$status" -eq 0 ]]
 }
 
+@test "Check that Petstore example app is working via GET /pet/1 route" {
+  info
+  test() {
+    nodeIp=$(kubectl get pods -n kong -o jsonpath="{.items[*].status.hostIP}")
+    http_code=$(curl "http://${nodeIp}:31081/pet/1" -s -o /dev/null -w "%{http_code}")
+    if [ "${http_code}" -ne "200" ]; then return 1; fi
+  }
+  run test
+  [[ "$status" -eq 0 ]]
+}
+
+@test "Check that Petstore example app denying POST on /pet/1 route" {
+  info
+  test() {
+    nodeIp=$(kubectl get pods -n kong -o jsonpath="{.items[*].status.hostIP}")
+    http_code=$(echo '{"stuff": 1}' | curl -d @- "http://${nodeIp}:31081/pet/1" --header "Content-Type:application/json" -s -o /dev/null -w "%{http_code}")
+    if [ "${http_code}" -ne "404" ]; then return 1; fi
+  }
+  run test
+  [[ "$status" -eq 0 ]]
+}
+
+@test "Testing Petstore example app rate limiting /pet/1 route" {
+  info
+  test() {
+    nodeIp=$(kubectl get pods -n kong -o jsonpath="{.items[*].status.hostIP}")
+    for i in {1..5}; do http_code=$(curl "http://${nodeIp}:31081/pet/1" -s -o /dev/null -w "%{http_code}"); done
+    if [ "${http_code}" -ne "429" ]; then return 1; fi
+  }
+  run test
+  [[ "$status" -eq 0 ]]
+}
 
 
-#
-## [ALLOW] Allowed by Gatekeeper Kubernetes requests
-#
-#@test "[ALLOW] Deployment in a Whitelisted Namespace (kube-system)" {
-#  info
-#  deploy() {
-#    kubectl apply -f katalog/tests/gatekeeper-manifests/deploy_ns_whitelisted.yml
-#  }
-#  run deploy
-#  [[ "$status" -eq 0 ]]
-#}
-#
-#@test "[ALLOW] Deployment with every required attributes" {
-#  info
-#  deploy() {
-#    kubectl apply -f katalog/tests/gatekeeper-manifests/deployment_trusted.yml
-#  }
-#  run deploy
-#  [[ "$status" -eq 0 ]]
-#}
-#
-#@test "[ALLOW] Create not existing Ingress" {
-#  info
-#  deploy() {
-#    kubectl apply -f katalog/tests/gatekeeper-manifests/ingress_trusted.yml
-#  }
-#  run deploy
-#  [[ "$status" -eq 0 ]]
-#}
-#
-## [DENY] Denied by Gatekeeper Kubernetes requests
-#
-#@test "[DENY] Deployment using latest tag" {
-#  info
-#  deploy() {
-#    kubectl apply -f katalog/tests/gatekeeper-manifests/deployment_reject_label_latest.yml
-#  }
-#  run deploy
-#  [[ "$status" -ne 0 ]]
-#  [[ "$output" == *"denied by enforce-deployment-and-pod-security-controls"* ]]
-#}
-#
-#@test "[DENY] Deployment without resources" {
-#  info
-#  deploy() {
-#    kubectl apply -f katalog/tests/gatekeeper-manifests/deployment_rejected_missing_resources.yml
-#  }
-#  run deploy
-#  [[ "$status" -ne 0 ]]
-#  [[ "$output" == *"denied by enforce-deployment-and-pod-security-controls"* ]]
-#}
-#
-#@test "[DENY] Pod without liveness/readiness probes" {
-#  info
-#  deploy() {
-#    kubectl apply -f katalog/tests/gatekeeper-manifests/pod-rejected-without-livenessProbe.yml
-#  }
-#  run deploy
-#  [[ "$status" -ne 0 ]]
-#  [[ "$output" == *"denied by liveness-probe"* ]]
-#}
-#
-#@test "[DENY] Duplicated ingress" {
-#  info
-#  deploy() {
-#    kubectl apply -f katalog/tests/gatekeeper-manifests/ingress_rejected_duplicated.yml
-#  }
-#  run deploy
-#  [[ "$status" -ne 0 ]]
-#  [[ "$output" == *"denied by unique-ingress-host"* ]]
-#}
-#
-#@test "Teardown - Delete resources" {
-#  info
-#  resource_teardown() {
-#    kubectl delete -f katalog/tests/gatekeeper-manifests/deploy_ns_whitelisted.yml
-#    kubectl delete -f katalog/tests/gatekeeper-manifests/deployment_trusted.yml
-#    kubectl delete -f katalog/tests/gatekeeper-manifests/ingress_trusted.yml
-#  }
-#  run resource_teardown
-#  [[ "$status" -eq 0 ]]
-#}
-#
-#@test "Teardown - Delete Gatekeeper Rules" {
-#  info
-#  gatekeeper_teardown() {
-#    kaction katalog/gatekeeper/rules delete
-#  }
-#  run gatekeeper_teardown
-#  [[ "$status" -eq 0 ]]
-#}
-#
-#@test "Teardown - Delete Gatekeeper Core" {
-#  info
-#  gatekeeper_teardown() {
-#    kaction katalog/gatekeeper/core delete
-#  }
-#  run gatekeeper_teardown
-#  [[ "$status" -eq 0 ]]
-#}
+@test "Testing Petstore example app basic auth /user route" {
+  info
+  test() {
+    nodeIp=$(kubectl get pods -n kong -o jsonpath="{.items[*].status.hostIP}")
+    http_code=$(echo '{"id": 1,"username": "user","firstName": "user","lastName": "user","email": "user@user.tld","password": "user","phone": "1234","userStatus": 0 }' | curl -d @- http://${nodeIp}:31081/user  -u user:123456 --header "Content-Type:application/json" -s -o /dev/null -w "%{http_code}")
+    if [ "${http_code}" -ne "200" ]; then return 1; fi
+  }
+  run test
+  [[ "$status" -eq 0 ]]
+}
