@@ -36,7 +36,7 @@ set -o pipefail
 @test "Deploy Petstore example app" {
   info
   deploy() {
-    kaction katalog/kong/example-app/petstore apply
+    kaction examples/petstore apply
   }
   run deploy
   [[ "$status" -eq 0 ]]
