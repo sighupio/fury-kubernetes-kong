@@ -5,8 +5,8 @@ bases:
 
 images:
   - name: kong
-    newName: kong-docker-kong-enterprise-k8s.bintray.io/kong-enterprise-k8s
-    newTag: 2.0.4.1-alpine
+    newName: kong-docker-kong-enterprise-edition-docker.bintray.io/kong-enterprise-edition
+    newTag: 1.5.0.2-alpine
 
 patchesStrategicMerge:
   - kong-ingress-dbless-ds.yml
@@ -23,6 +23,7 @@ secretGenerator:
     files:
       - license.json
   - name: kong-enterprise-docker-secrets
+    namespace: kong
     files:
       - .dockerconfig.json
     type: kubernetes.io/dockerconfigjson

@@ -16,7 +16,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: kong-enterprise-license
-                  key: license
+                  key: license.json
       containers:
         - name: proxy
           env:
@@ -25,3 +25,20 @@ spec:
                 secretKeyRef:
                   name: kong-enterprise-license
                   key: license.json
+          ports:
+            - containerPort: 8001
+              name: admin
+              protocol: TCP
+            - containerPort: 8002
+              name: manager
+              protocol: TCP
+            - containerPort: 8003
+              name: portal
+              protocol: TCP
+        - name: ingress-controller
+          env:
+            - name: CONTROLLER_KONG_ADMIN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: kong-settings
+                  key: KONG_PASSWORD
