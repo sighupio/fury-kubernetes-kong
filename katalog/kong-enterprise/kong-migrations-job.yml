@@ -1,0 +1,22 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kong-migrations
+  namespace: kong
+spec:
+  template:
+    spec:
+      imagePullSecrets:
+        - name: kong-enterprise-docker-secrets
+      containers:
+        - name: kong-migrations
+          env:
+            - name: KONG_LICENSE_DATA
+              valueFrom:
+                secretKeyRef:
+                  name: kong-enterprise-license
+                  key: license.json
+          envFrom:
+            - secretRef:
+                name: kong-settings

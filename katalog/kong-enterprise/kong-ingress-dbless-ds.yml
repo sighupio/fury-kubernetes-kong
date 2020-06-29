@@ -1,0 +1,27 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ingress-kong
+  namespace: kong
+spec:
+  template:
+    spec:
+      imagePullSecrets:
+        - name: kong-enterprise-docker-secrets
+      initContainers:
+        - name: wait-for-migrations
+          env:
+            - name: KONG_LICENSE_DATA
+              valueFrom:
+                secretKeyRef:
+                  name: kong-enterprise-license
+                  key: license
+      containers:
+        - name: proxy
+          env:
+            - name: KONG_LICENSE_DATA
+              valueFrom:
+                secretKeyRef:
+                  name: kong-enterprise-license
+                  key: license.json
