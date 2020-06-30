@@ -9,7 +9,7 @@ images:
     newTag: 1.5.0.2-alpine
 
 patchesStrategicMerge:
-  - kong-ingress-dbless-ds.yml
+  - kong-ingress-ds.yml
   - kong-migrations-job.yml
 
 secretGenerator:
