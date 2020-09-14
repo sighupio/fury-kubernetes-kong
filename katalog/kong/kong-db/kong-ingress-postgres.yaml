@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ingress-kong
+  namespace: kong
+spec:
+  template:
+    spec:
+      initContainers:
+      - name: wait-for-migrations
+        image: kong:2.1
+        command:
+        - "/bin/sh"
+        - "-c"
+        - "while true; do kong migrations list; if [[ 0 -eq $? ]]; then exit 0; fi; sleep 2;  done;"
+        envFrom:
+          - secretRef:
+              name: kong-settings

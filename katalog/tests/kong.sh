@@ -18,7 +18,7 @@ set -o pipefail
 @test "Deploy Kong Ingress Controller" {
   info
   deploy() {
-    kaction katalog/kong apply
+    kaction katalog/kong/kong-dbless apply
   }
   run deploy
   [[ "$status" -eq 0 ]]
