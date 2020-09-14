@@ -1,5 +1,5 @@
 # Fury Kubernetes Kong
-WIP
+
 This repo contains Kong Ingress Controller for Kubernetes.
 
 ## Ingress Packages
