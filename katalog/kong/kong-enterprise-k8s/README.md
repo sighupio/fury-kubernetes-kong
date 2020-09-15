@@ -1,4 +1,4 @@
-# Kong DB-less architecture
+# Kong DB-less architecture with Enterprise image
 
 In this architecture, Kong Ingress Controller is deployed as sidecar with Kong Proxy.
 
