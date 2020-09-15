@@ -16,4 +16,3 @@ spec:
     targetPort: 8006
   selector:
     app: ingress-kong-cp
-

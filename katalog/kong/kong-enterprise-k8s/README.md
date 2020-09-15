@@ -9,5 +9,3 @@ The Kong Proxy is the Enterprise one, meaning that you can also deploy Enterpris
 This deployment is a turnkey solution, you can eventually change some configuration like the service that is exposing the 
 kong ingress in the cluster and some fine tuning in the kong gateway. You will need to add the correct `secrets` like the
 license and the .dockerconfigjson credentials needed to download the docker image.
-
- 
