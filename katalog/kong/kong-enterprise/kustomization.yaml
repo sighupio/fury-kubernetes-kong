@@ -8,11 +8,12 @@ resources:
   - kong-enterprise-statefulset-cp.yaml
   - kong-enterprise-deployment-dp.yaml
   - kong-enterprise-migrations.yaml
-  - servicemonitor.yml
-  - alerts.yaml
+  - servicemonitor-cp.yml
 
 patchesStrategicMerge:
   - validation-service.yaml
+  - servicemonitor.yml
+  - alerts.yaml
 
 images:
   - name: kong
