@@ -15,3 +15,8 @@ secretGenerator:
     behavior: merge
     envs:
       - kong.env
+
+images:
+  - name: kong
+    newName: kong
+    newTag: 2.3.2

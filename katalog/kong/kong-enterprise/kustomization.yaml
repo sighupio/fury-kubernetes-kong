@@ -21,7 +21,7 @@ images:
     newTag: 2.3.2.0-alpine
   - name: ingress-controller
     newName: kong-docker-kubernetes-ingress-controller.bintray.io/kong-ingress-controller
-    newTag: 0.10.0
+    newTag: 1.1.1
 
 secretGenerator:
   - name: kong-settings

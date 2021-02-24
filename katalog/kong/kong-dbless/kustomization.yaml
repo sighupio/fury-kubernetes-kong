@@ -11,3 +11,11 @@ secretGenerator:
     namespace: kong
     envs:
       - kong.env
+
+images:
+  - name: kong
+    newName: kong
+    newTag: 2.3.2
+  - name: ingress-controller
+    newName: kong-docker-kubernetes-ingress-controller.bintray.io/kong-ingress-controller
+    newTag: 1.1.1
