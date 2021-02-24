@@ -6,6 +6,7 @@ resources:
 
 patchesStrategicMerge:
   - kong-enterprise-services.yaml
+  # - kong-enterprise-migrations.yaml USE ONLY WHEN UPGRADING
 
 secretGenerator:
   - name: kong-settings
@@ -18,11 +19,6 @@ secretGenerator:
     behavior: merge
     envs:
       - kong-cp.env
-  - name: kong-settings-dp
-    namespace: kong
-    behavior: merge
-    envs:
-      - kong-dp.env
   - name: kong-enterprise-license
     namespace: kong
     behavior: replace
