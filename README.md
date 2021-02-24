@@ -15,10 +15,21 @@ provides delivery API Gateway for Kubernetes applications. Version: **1.3.1**
 | ----------------------------------- | :----------------: | :----------------: | :----------------: | :-------: |
 | v1.0.0                              |                    |                    |                    |           |
 | v1.1.0                              | :white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: |
+| v2.0.0                              | :white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: |
 
-- :white_check_mark: Compatible
-- :warning: Has issues
-- :x: Incompatible
+### Open Source
+
+- [kong-dbless](katalog/kong/kong-dbless): Default Kong Ingress, without DB. Ingress Version: **1.1.1**, Kong Version: **2.3.2**
+- [kong-db](katalog/kong/kong-db): Kong Ingress that uses a postgres db for persistence. Ingress Version: **1.1.1**, Kong Version: **2.3.2**
+
+### Enterprise
+
+- [kong-enterprise](katalog/kong/kong-enterprise): The KONG Ingress Controller for Kubernetes with Kong Enterprise Edition.
+  Version: Ingress: **1.1.1**, Kong Enterprise: **2.3.2.0**
+- [kong-enterprise-hybrid](katalog/kong/kong-enterprise-hybrid): The KONG Ingress Controller for Kubernetes with Kong Enterprise Edition. Data Planes connected to Control Plane in Hybrid Mode.
+  Version: Ingress: **1.1.1**, Kong Enterprise: **2.3.2.0**
+- [kong-enterprise-k8s](katalog/kong/kong-enterprise-k8s): The KONG Ingress Controller for Kubernetes with Kong Enterprise Edition for K8s.
+  Version: Ingress: **1.1.1**, Kong Enterprise: **2.3.2.0**
 
 ## License
 
