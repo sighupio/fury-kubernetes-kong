@@ -5,18 +5,16 @@ metadata:
   name: kong-proxy
   namespace: kong
 spec:
+  type: LoadBalancer
   externalTrafficPolicy: Local
-  type: NodePort
   ports:
     - name: proxy
       port: 80
       targetPort: 8000
-      nodePort: 31081
       protocol: TCP
     - name: proxy-ssl
       port: 443
       targetPort: 8443
-      nodePort: 31444
       protocol: TCP
   selector:
     app: ingress-kong-dp
@@ -27,19 +25,25 @@ metadata:
   name: kong-portal
   namespace: kong
 spec:
+  type: LoadBalancer
   externalTrafficPolicy: Local
-  type: NodePort
   ports:
     - name: portal
-      port: 8003
+      port: 80
       protocol: TCP
       targetPort: 8003
-      nodePort: 31084
     - name: portal-api
-      port: 8004
+      port: 8080
       protocol: TCP
       targetPort: 8004
-      nodePort: 31085
+    - name: portal-ssl
+      port: 443
+      protocol: TCP
+      targetPort: 8446
+    - name: portal-api-ssl
+      port: 8443
+      protocol: TCP
+      targetPort: 8447
   selector:
     app: ingress-kong-dp
 ---
@@ -49,19 +53,24 @@ metadata:
   name: kong-admin
   namespace: kong
 spec:
+  type: LoadBalancer
   externalTrafficPolicy: Local
-  type: NodePort
   ports:
-  - name: admin
-    port: 8001
-    protocol: TCP
-    targetPort: 8001
-    nodePort: 31082
-  - name: manager
-    port: 8002
-    protocol: TCP
-    targetPort: 8002
-    nodePort: 31083
+    - name: admin
+      port: 8080
+      protocol: TCP
+      targetPort: 8001
+    - name: manager
+      port: 80
+      protocol: TCP
+      targetPort: 8002
+    - name: admin-ssl
+      port: 8443
+      protocol: TCP
+      targetPort: 8444
+    - name: manager-ssl
+      port: 443
+      protocol: TCP
+      targetPort: 8445
   selector:
     app: ingress-kong-cp
-

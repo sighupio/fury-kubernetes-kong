@@ -26,7 +26,7 @@ between control plane and data plane and adds the secret generation for the TLS 
 * Kong image: `kong:2.1`
 * Kong ingress controller image: `kong-docker-kubernetes-ingress-controller.bintray.io/kong-ingress-controller:0.10.0`
 * Kong Ingress Enterprise for K8s: `kong-docker-kong-enterprise-k8s.bintray.io/kong-enterprise-k8s:2.0.4.2-alpine`
-* Kong Enterprise: `kong-docker-kong-enterprise-edition-docker.bintray.io/kong-enterprise-edition:2.1.4.0-alpine`
+* Kong Enterprise: `kong-docker-kong-enterprise-edition-docker.bintray.io/kong-enterprise-edition:2.3.2.0-alpine`
 
 ## Configuration
 
