@@ -5,14 +5,14 @@ Kong Ingress Controller is an Ingress Controller for [KONG](https://konghq.com/)
 
 ## Requirements
 
-- Kubernetes >= `1.14.0`
+- Kubernetes >= `1.18.0`
 - Kustomize >= `v3`
 
 
 ## Image repository and tag
 
-* Kong image: `kong:2.0`
-* Kong ingress controller image: `kong-docker-kubernetes-ingress-controller.bintray.io/kong-ingress-controller:0.8.1`
+* Kong image: `docker.io/library/kong:2.4`
+* Kong ingress controller image: `docker.io/kong/kubernetes-ingress-controller:1.3.1`
 
 
 ## Configuration

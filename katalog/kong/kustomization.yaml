@@ -1,5 +1,7 @@
+---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+
 bases:
   - upstream
 
@@ -11,3 +13,11 @@ resources:
 patchesStrategicMerge:
   - service.yaml
   - kong-ingress-dbless.yml
+
+images:
+  - name: kong
+    newName: registry.sighup.io/fury/kong
+    newTag: "2.4"
+  - name: kong/kubernetes-ingress-controller
+    newName: registry.sighup.io/fury/kong/kubernetes-ingress-controller
+    newTag: "1.3"
