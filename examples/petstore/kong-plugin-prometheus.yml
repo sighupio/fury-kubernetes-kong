@@ -1,7 +1,8 @@
+---
 apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
 metadata:
   name: prometheus
   annotations:
-    kubernetes.io/ingress.class: 'kong'
+    kubernetes.io/ingress.class: kong
 plugin: prometheus

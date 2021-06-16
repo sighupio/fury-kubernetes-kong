@@ -1,10 +1,11 @@
+---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: private-petstore
   annotations:
+    kubernetes.io/ingress.class: kong
     konghq.com/plugins: request-id,rate-limiting,basic-auth,prometheus
-    kubernetes.io/ingress.class: 'kong'
 spec:
   rules:
     - http:
