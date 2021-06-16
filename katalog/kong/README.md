@@ -22,8 +22,8 @@ Fury distribution Kong is deployed with following configuration:
 - Metrics are scraped by Prometheus every `10s`
 - Kong ingress controller is a DaemonSet and not a Deployment
 - Service is exposed as `NodePort` on ports:
-    - `31081` for HTTP
-    - `31444` for HTTPS
+  - `31081` for HTTP
+  - `31444` for HTTPS
 - Set `externalTrafficPolicy: Local` on kong service
 
 
