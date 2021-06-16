@@ -2,7 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ../kong-dbless
+  - ../base
   - ../postgres
   - migration.yaml
 
@@ -15,8 +15,3 @@ secretGenerator:
     behavior: merge
     envs:
       - kong.env
-
-images:
-  - name: kong
-    newName: kong
-    newTag: 2.3.2
