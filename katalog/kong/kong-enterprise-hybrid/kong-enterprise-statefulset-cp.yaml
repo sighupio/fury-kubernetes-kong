@@ -10,24 +10,7 @@ spec:
   template:
     spec:
       initContainers:
-        - command:
-            - /bin/sh
-            - -c
-            - while true; do kong migrations list; if [[ 0 -eq $? ]]; then exit 0; fi;
-              sleep 2;  done;
-          env:
-            - name: KONG_LICENSE_DATA
-              valueFrom:
-                secretKeyRef:
-                  key: license
-                  name: kong-enterprise-license
-          envFrom:
-            - secretRef:
-                name: kong-settings
-            - secretRef:
-                name: kong-settings-cp
-          image: kong
-          name: wait-for-migrations
+        - name: wait-for-migrations
           volumeMounts:
             - mountPath: /etc/secrets/kong-cluster-cert
               name: kong-cluster-cert

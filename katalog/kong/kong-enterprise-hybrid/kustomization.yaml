@@ -1,3 +1,4 @@
+---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
@@ -7,7 +8,7 @@ resources:
 
 patchesStrategicMerge:
   - kong-enterprise-statefulset-cp.yaml
-  - kong-enterprise-deployment-dp.yaml
+  - kong-enterprise-ds-dp.yaml
   - kong-enterprise-migrations.yaml
 
 secretGenerator:
