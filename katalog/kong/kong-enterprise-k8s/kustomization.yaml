@@ -13,7 +13,7 @@ patchesStrategicMerge:
 
 images:
   - name: registry.sighup.io/fury/kong
-    newName: docker.io/kong/kong-gateway
+    newName: registry.sighup.io/fury/kong/kong-gateway
     newTag: 2.4.1.1
 
 secretGenerator:
