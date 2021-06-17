@@ -30,5 +30,5 @@ spec:
     app: ingress-kong-cp
   ports:
     - name: metrics
-      port: 9542
+      port: 8100
       targetPort: metrics

@@ -3,13 +3,13 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   labels:
-    app: ingress-kong-dp
-  name: ingress-kong-dp
+    app: ingress-kong
+  name: ingress-kong
   namespace: kong
 spec:
   selector:
     matchLabels:
-      app: ingress-kong-dp
+      app: ingress-kong
   template:
     metadata:
       annotations:
@@ -18,10 +18,8 @@ spec:
         prometheus.io/scrape: "true"
         traffic.sidecar.istio.io/includeInboundPorts: ""
       labels:
-        app: ingress-kong-dp
+        app: ingress-kong
     spec:
-      imagePullSecrets:
-        - name: kong-enterprise-edition-docker
       initContainers:
         - command:
             - /bin/sh
@@ -43,7 +41,10 @@ spec:
           name: wait-for-migrations
       serviceAccountName: kong-serviceaccount
       containers:
-        - envFrom:
+        - name: ingress-controller
+          $patch: delete
+        - name: proxy
+          envFrom:
             - secretRef:
                 name: kong-settings
             - secretRef:
@@ -54,25 +55,6 @@ spec:
                 secretKeyRef:
                   key: license
                   name: kong-enterprise-license
-          image: kong
-          lifecycle:
-            preStop:
-              exec:
-                command:
-                  - /bin/sh
-                  - -c
-                  - kong quit
-          livenessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /status
-              port: 8100
-              scheme: HTTP
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 1
-          name: proxy
           ports:
             - containerPort: 8000
               name: proxy
@@ -80,18 +62,35 @@ spec:
             - containerPort: 8443
               name: proxy-ssl
               protocol: TCP
+
             - containerPort: 8100
               name: metrics
               protocol: TCP
-          readinessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /status
-              port: 8100
-              scheme: HTTP
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 1
-          securityContext:
-            runAsUser: 1000
+
+            - containerPort: 8001
+              name: admin
+              protocol: TCP
+            - containerPort: 8444
+              name: admin-ssl
+              protocol: TCP
+
+            - containerPort: 8002
+              name: admin-gui
+              protocol: TCP
+            - containerPort: 8445
+              name: admin-gui-ssl
+              protocol: TCP
+
+            - containerPort: 8003
+              name: portal-gui
+              protocol: TCP
+            - containerPort: 8446
+              name: portal-gui-ssl
+              protocol: TCP
+
+            - containerPort: 8004
+              name: api-gui
+              protocol: TCP
+            - containerPort: 8447
+              name: api-ssl
+              protocol: TCP

@@ -26,8 +26,6 @@ spec:
       labels:
         app: ingress-kong-cp
     spec:
-      imagePullSecrets:
-        - name: kong-enterprise-edition-docker
       initContainers:
         - command:
             - /bin/sh
@@ -80,21 +78,45 @@ spec:
             timeoutSeconds: 1
           name: proxy
           ports:
-            - containerPort: 8001
-              name: admin
-              protocol: TCP
-            - containerPort: 8002
-              name: manager
-              protocol: TCP
             - containerPort: 8000
               name: proxy
               protocol: TCP
             - containerPort: 8443
               name: proxy-ssl
               protocol: TCP
+
             - containerPort: 8100
               name: metrics
               protocol: TCP
+
+            - containerPort: 8001
+              name: admin
+              protocol: TCP
+            - containerPort: 8444
+              name: admin-ssl
+              protocol: TCP
+
+            - containerPort: 8002
+              name: admin-gui
+              protocol: TCP
+            - containerPort: 8445
+              name: admin-gui-ssl
+              protocol: TCP
+
+            - containerPort: 8003
+              name: portal-gui
+              protocol: TCP
+            - containerPort: 8446
+              name: portal-gui-ssl
+              protocol: TCP
+
+            - containerPort: 8004
+              name: api-gui
+              protocol: TCP
+            - containerPort: 8447
+              name: api-ssl
+              protocol: TCP
+
           readinessProbe:
             failureThreshold: 3
             httpGet:
@@ -129,7 +151,7 @@ spec:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: metadata.namespace
-          image: ingress-controller
+          image: kong/kubernetes-ingress-controller
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
