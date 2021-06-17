@@ -24,9 +24,3 @@ secretGenerator:
     behavior: replace
     files:
       - license=secrets/license.json
-  - name: kong-enterprise-edition-docker
-    namespace: kong
-    behavior: replace
-    files:
-      - .dockerconfigjson=secrets/.dockerconfigjson
-    type: kubernetes.io/dockerconfigjson
