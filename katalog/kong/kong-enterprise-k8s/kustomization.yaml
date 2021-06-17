@@ -8,17 +8,12 @@ patchesStrategicMerge:
   - kong-enterprise-k8s.yaml
 
 images:
-- name: kong
-  newName: kong-docker-kong-enterprise-k8s.bintray.io/kong-enterprise-k8s
-  newTag: 2.3.2.0-alpine
+  - name: registry.sighup.io/fury/kong
+    newName: docker.io/kong/kong-gateway
+    newTag: 2.4.1.1
 
 secretGenerator:
   - name: kong-enterprise-license
     namespace: kong
     files:
       - license=secrets/license.json
-  - name: kong-enterprise-k8s-docker
-    namespace: kong
-    files:
-      - .dockerconfigjson=secrets/.dockerconfigjson
-    type: kubernetes.io/dockerconfigjson
