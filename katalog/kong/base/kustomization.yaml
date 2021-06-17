@@ -10,6 +10,7 @@ bases:
   - ../upstream
 
 resources:
+  - grafana/
   - servicemonitor.yml
   - alerts.yaml
   - kong-ingress-dbless-ds.yml
