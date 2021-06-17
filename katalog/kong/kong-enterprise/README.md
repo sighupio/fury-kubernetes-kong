@@ -87,11 +87,11 @@ KONG_ADMIN_GUI_URL=http://manager.mac.local:8080
 ### KONG_ADMIN_API_URI
 
 ```bash
-$ kubectl port-forward -n kong svc/kong-admin 9091:8080 &
+kubectl port-forward -n kong svc/kong-admin 9091:8080 &
 ```
 
 ### KONG_PORTAL_GUI_HOST
 
 ```bash
-$ kubectl port-forward -n kong svc/kong-admin 8080:80 &
+kubectl port-forward -n kong svc/kong-admin 8080:80 &
 ```

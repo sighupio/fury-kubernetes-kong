@@ -29,6 +29,7 @@ steps:
     pull: always
     environment:
       VALIDATE_BASH: "false"
+      VALIDATE_ENV: "false"
     depends_on:
       - clone
 
