@@ -7,13 +7,13 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   labels:
-    app: ingress-kong
-  name: ingress-kong
+    app: ingress-kong-dp
+  name: ingress-kong-dp
   namespace: kong
 spec:
   selector:
     matchLabels:
-      app: ingress-kong
+      app: ingress-kong-dp
   template:
     metadata:
       annotations:
@@ -22,7 +22,7 @@ spec:
         traffic.sidecar.istio.io/includeInboundPorts: ""
         kuma.io/gateway: enabled
       labels:
-        app: ingress-kong
+        app: ingress-kong-dp
     spec:
       serviceAccountName: kong-serviceaccount
       containers:

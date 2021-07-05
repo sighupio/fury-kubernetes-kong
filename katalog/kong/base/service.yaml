@@ -25,4 +25,4 @@ spec:
     nodePort: 31444
     protocol: TCP
   selector:
-    app: ingress-kong
+    app: ingress-kong-dp

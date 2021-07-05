@@ -7,13 +7,13 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   labels:
-    app: ingress-kong
-  name: ingress-kong
+    app: ingress-kong-dp
+  name: ingress-kong-dp
   namespace: kong
 spec:
   selector:
     matchLabels:
-      app: ingress-kong
+      app: ingress-kong-dp
   template:
     metadata:
       annotations:
@@ -22,7 +22,7 @@ spec:
         prometheus.io/scrape: "true"
         traffic.sidecar.istio.io/includeInboundPorts: ""
       labels:
-        app: ingress-kong
+        app: ingress-kong-dp
     spec:
       initContainers:
         - command:
@@ -71,30 +71,15 @@ spec:
               name: metrics
               protocol: TCP
 
-            - containerPort: 8001
-              name: admin
-              protocol: TCP
-            - containerPort: 8444
-              name: admin-ssl
-              protocol: TCP
-
-            - containerPort: 8002
-              name: admin-gui
-              protocol: TCP
-            - containerPort: 8445
-              name: admin-gui-ssl
-              protocol: TCP
-
             - containerPort: 8003
-              name: portal-gui
+              name: portal
               protocol: TCP
             - containerPort: 8446
-              name: portal-gui-ssl
+              name: portal-ssl
               protocol: TCP
-
             - containerPort: 8004
-              name: api-gui
+              name: portal-api
               protocol: TCP
             - containerPort: 8447
-              name: api-ssl
+              name: portal-api-ssl
               protocol: TCP

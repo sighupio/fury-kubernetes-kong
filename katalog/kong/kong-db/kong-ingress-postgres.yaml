@@ -5,7 +5,7 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: ingress-kong
+  name: ingress-kong-dp
   namespace: kong
 spec:
   template:
