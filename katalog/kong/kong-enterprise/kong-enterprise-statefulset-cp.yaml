@@ -78,13 +78,6 @@ spec:
             timeoutSeconds: 1
           name: proxy
           ports:
-            - containerPort: 8000
-              name: proxy
-              protocol: TCP
-            - containerPort: 8443
-              name: proxy-ssl
-              protocol: TCP
-
             - containerPort: 8100
               name: metrics
               protocol: TCP
@@ -101,20 +94,6 @@ spec:
               protocol: TCP
             - containerPort: 8445
               name: admin-gui-ssl
-              protocol: TCP
-
-            - containerPort: 8003
-              name: portal-gui
-              protocol: TCP
-            - containerPort: 8446
-              name: portal-gui-ssl
-              protocol: TCP
-
-            - containerPort: 8004
-              name: api-gui
-              protocol: TCP
-            - containerPort: 8447
-              name: api-ssl
               protocol: TCP
 
           readinessProbe:
