@@ -27,7 +27,7 @@ spec:
       protocol: TCP
       targetPort: 8447
   selector:
-    app: ingress-kong-cp
+    app: ingress-kong-dp
 ---
 apiVersion: v1
 kind: Service
