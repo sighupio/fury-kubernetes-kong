@@ -11,6 +11,7 @@ set -o pipefail
 
 @test "Applying Monitoring CRDs" {
   info
+  kubectl create ns monitoring
   kubectl apply -f https://raw.githubusercontent.com/sighupio/fury-kubernetes-monitoring/v1.12.0/katalog/prometheus-operator/crd-servicemonitor.yml
   kubectl apply -f https://raw.githubusercontent.com/sighupio/fury-kubernetes-monitoring/v1.12.0/katalog/prometheus-operator/crd-rule.yml
 }
