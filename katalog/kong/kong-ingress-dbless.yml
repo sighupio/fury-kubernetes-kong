@@ -1,9 +1,0 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: ingress-kong
-  name: ingress-kong
-  namespace: kong
-spec:
-  replicas: 0

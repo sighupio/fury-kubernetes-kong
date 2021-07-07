@@ -1,0 +1,37 @@
+# Copyright (c) 2021 SIGHUP s.r.l All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata: # Labels and name of the ServiceMonitor
+  labels:
+    app: ingress-kong-dp
+  name: ingress-kong-dp
+  namespace: kong
+spec:
+  endpoints: # which port of the pods to scrape
+    - interval: 10s
+      port: metrics
+  jobLabel: ingress-kong-metrics
+  namespaceSelector: # filtering namespace
+    matchNames:
+      - kong
+  selector: # pod labels to match
+    matchLabels:
+      app: ingress-kong-dp
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ingress-kong-metrics
+  labels:
+    app: ingress-kong-dp
+  namespace: kong
+spec:
+  selector:
+    app: ingress-kong-dp
+  ports:
+    - name: metrics
+      port: 8100
+      targetPort: metrics

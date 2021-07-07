@@ -1,3 +1,7 @@
+# Copyright (c) 2021 SIGHUP s.r.l All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+
 ---
 apiVersion: v1
 kind: Service
@@ -6,8 +10,8 @@ metadata:
   labels:
     app: petstore
   annotations:
-    configuration.konghq.com: proxy
-    kubernetes.io/ingress.class: 'kong'
+    kubernetes.io/ingress.class: kong
+    konghq.com/override: proxy
 spec:
   ports:
     - name: http
