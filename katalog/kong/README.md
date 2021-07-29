@@ -8,10 +8,10 @@ In these manifests folder we put all the needed manifests to deploy all sorts of
 * [Architecture Info](kong-dbless/README.md) `kong-dbless` is the kong ingress controller open source without DB
 * [Architecture Info](kong-db/README.md) `kong-db` is the kong ingress controller plus DB
 * [Architecture Info](kong-enterprise-k8s/README.md) `kong-enterprise-k8s` is the kong ingress controller without DB but with the enterprise image
-* [Architecture Info](kong-enterprise/README.md) `kong-enterprise` This folder contains the Kong Enterprise deployment. We split control plane and data plane. 
-The control plane part is a statefulset and the data plane part is a daemonset. 
+* [Architecture Info](kong-enterprise/README.md) `kong-enterprise` This folder contains the Kong Enterprise deployment. We split control plane and data plane.
+The control plane part is a statefulset and the data plane part is a daemonset.
 Only the statefulset contains the kong ingress as a sidecar.
-* [Architecture Info](kong-enterprise-hybrid/README.md) `kong-enterprise-hybrid` this folders extends the `kong-enterprise` adding the services needed to intercommunicate 
+* [Architecture Info](kong-enterprise-hybrid/README.md) `kong-enterprise-hybrid` this folders extends the `kong-enterprise` adding the services needed to intercommunicate
 between control plane and data plane and adds the secret generation for the TLS used for the internal communication of kong.
 
 
@@ -35,8 +35,8 @@ Fury distribution Kong is deployed with following configuration:
 - Metrics are scraped by Prometheus every `10s`
 - Kong ingress controller is a DaemonSet and not a Deployment
 - Service is exposed as `NodePort` on ports:
-    - `31081` for HTTP
-    - `31444` for HTTPS
+  - `31081` for HTTP
+  - `31444` for HTTPS
 - Set `externalTrafficPolicy: Local` on kong service
 - There are two different servicemonitors for the Enterprise CP/DP architecture, one for the CP and one for DP.
 

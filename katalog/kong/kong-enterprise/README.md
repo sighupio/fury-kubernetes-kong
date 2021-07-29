@@ -9,7 +9,7 @@ The Kong Data Plane is deployed as a daemonset, all the Kong Data Plane reads th
 
 ![Kong Enterprise DB Architecture](../../../docs/images/deployment-classic-distributed.png)
 
-This deployment is a turnkey solution, you can eventually change some configuration like the service that is exposing the 
+This deployment is a turnkey solution, you can eventually change some configuration like the service that is exposing the
 kong ingress in the cluster and some fine tuning in the kong gateway. You will need to add the correct `secrets` like the
 license and the .dockerconfigjson credentials needed to download the docker image.
 

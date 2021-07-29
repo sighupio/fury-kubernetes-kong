@@ -13,9 +13,9 @@ Following packages are included in Fury Kubernetes Kong katalog:
 
 ### Enterprise
 
-- [kong-enterprise](katalog/kong/kong-enterprise): The KONG Ingress Controller for Kubernetes with Kong Enterprise Edition. 
+- [kong-enterprise](katalog/kong/kong-enterprise): The KONG Ingress Controller for Kubernetes with Kong Enterprise Edition.
   Version: Ingress: **1.1.1**, Kong Enterprise: **2.3.2.0**
-- [kong-enterprise-hybrid](katalog/kong/kong-enterprise-hybrid): The KONG Ingress Controller for Kubernetes with Kong Enterprise Edition. Data Planes connected to Control Plane in Hybrid Mode. 
+- [kong-enterprise-hybrid](katalog/kong/kong-enterprise-hybrid): The KONG Ingress Controller for Kubernetes with Kong Enterprise Edition. Data Planes connected to Control Plane in Hybrid Mode.
   Version: Ingress: **1.1.1**, Kong Enterprise: **2.3.2.0**
 - [kong-enterprise-k8s](katalog/kong/kong-enterprise-k8s): The KONG Ingress Controller for Kubernetes with Kong Enterprise Edition for K8s.
   Version: Ingress: **1.1.1**, Kong Enterprise: **2.3.2.0**
