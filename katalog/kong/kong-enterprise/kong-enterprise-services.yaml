@@ -1,0 +1,56 @@
+# Copyright (c) 2021 SIGHUP s.r.l All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kong-portal
+  namespace: kong
+spec:
+  ports:
+    - name: portal
+      port: 80
+      protocol: TCP
+      targetPort: 8003
+    - name: portal-ssl
+      port: 443
+      protocol: TCP
+      targetPort: 8446
+    - name: portal-api
+      port: 8080
+      protocol: TCP
+      targetPort: 8004
+    - name: portal-api-ssl
+      port: 8443
+      protocol: TCP
+      targetPort: 8447
+  selector:
+    app: ingress-kong-dp
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kong-admin
+  namespace: kong
+spec:
+  ports:
+    - name: admin
+      port: 8080
+      protocol: TCP
+      targetPort: 8001
+    - name: admin-ssl
+      port: 8443
+      protocol: TCP
+      targetPort: 8444
+    - name: admin-gui
+      port: 80
+      protocol: TCP
+      targetPort: 8002
+    - name: admin-gui-ssl
+      port: 443
+      protocol: TCP
+      targetPort: 8445
+  selector:
+    app: ingress-kong-cp

@@ -1,0 +1,30 @@
+# Copyright (c) 2021 SIGHUP s.r.l All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../../katalog/kong/kong-enterprise
+
+patchesStrategicMerge:
+  - kong-enterprise-services.yaml
+  # - kong-enterprise-migrations.yaml USE ONLY WHEN UPGRADING
+
+secretGenerator:
+  - name: kong-settings
+    namespace: kong
+    behavior: merge
+    envs:
+      - kong-common.env
+  - name: kong-settings-cp
+    namespace: kong
+    behavior: merge
+    envs:
+      - kong-cp.env
+  - name: kong-enterprise-license
+    namespace: kong
+    behavior: replace
+    files:
+      - license=secrets/license.json

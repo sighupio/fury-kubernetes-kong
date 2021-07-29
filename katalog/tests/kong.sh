@@ -1,4 +1,9 @@
 #!/usr/bin/env bats
+# shellcheck disable=SC2154,SC2034,SC2086,SC2103
+# Copyright (c) 2021 SIGHUP s.r.l All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+
 
 load helper
 
@@ -6,14 +11,15 @@ set -o pipefail
 
 @test "Applying Monitoring CRDs" {
   info
-  kubectl apply -f https://raw.githubusercontent.com/sighupio/fury-kubernetes-monitoring/v1.3.0/katalog/prometheus-operator/crd-servicemonitor.yml
-  kubectl apply -f https://raw.githubusercontent.com/sighupio/fury-kubernetes-monitoring/v1.3.0/katalog/prometheus-operator/crd-rule.yml
+  kubectl create ns monitoring
+  kubectl apply -f https://raw.githubusercontent.com/sighupio/fury-kubernetes-monitoring/v1.12.0/katalog/prometheus-operator/crd-servicemonitor.yml
+  kubectl apply -f https://raw.githubusercontent.com/sighupio/fury-kubernetes-monitoring/v1.12.0/katalog/prometheus-operator/crd-rule.yml
 }
 
 @test "Deploy Kong Ingress Controller" {
   info
   deploy() {
-    kaction katalog/kong apply
+    kaction katalog/kong/kong-dbless apply
   }
   run deploy
   [[ "$status" -eq 0 ]]
@@ -88,7 +94,6 @@ set -o pipefail
   [[ "$status" -eq 0 ]]
 }
 
-
 @test "Testing Petstore example app basic auth /user route" {
   info
   test() {
@@ -99,7 +104,6 @@ set -o pipefail
   status=${loop_it_result}
   [[ "$status" -eq 0 ]]
 }
-
 
 @test "Check that Petstore example app is working via GET /store/inventory route and host awesome-kong.io" {
   info
