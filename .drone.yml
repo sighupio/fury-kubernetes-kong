@@ -43,16 +43,37 @@ steps:
     depends_on:
       - clone
     commands:
-      - kustomize build katalog/kong > kong.yml
+      - kustomize build katalog/kong/kong-db > kong-db.yml
+      - kustomize build katalog/kong/kong-dbless > kong-dbless.yml
+      - kustomize build katalog/kong/kong-enterprise > kong-enterprise.yml
+      - kustomize build katalog/kong/kong-enterprise-hybrid > kong-enterprise-hybrid.yml
+      - kustomize build katalog/kong/kong-enterprise-k8s > kong-enterprise-k8s.yml
 
-  - name: deprek8ion
+  - &deprek8ion
+    name: deprek8ion-kong-db
     image: eu.gcr.io/swade1987/deprek8ion:1.1.34
     pull: always
+    environment:
+      KUBERNETES_MANIFESTS: kong-db.yml
     depends_on:
       - render
     commands:
-      - /conftest test -p /policies kong.yml
+      - /conftest test -p /policies $${KUBERNETES_MANIFESTS}
 
+  - <<: *deprek8ion
+    name: deprek8ion-kong-dbless
+    environment:
+      KUBERNETES_MANIFESTS: kong-dbless.yml
+
+  - <<: *deprek8ion
+    name: deprek8ion-kong-enterprise-hybrid
+    environment:
+      KUBERNETES_MANIFESTS: kong-enterprise-hybrid.yml
+
+  - <<: *deprek8ion
+    name: deprek8ion-kong-enterprise-k8s
+    environment:
+      KUBERNETES_MANIFESTS: kong-enterprise-k8s.yml
 ---
 kind: pipeline
 name: e2e-kubernetes-1.18
