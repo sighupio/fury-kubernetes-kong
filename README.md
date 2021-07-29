@@ -32,3 +32,4 @@ Following packages are included in Fury Kubernetes Kong katalog:
 - :white_check_mark: Compatible
 - :warning: Has issues
 - :x: Incompatible
+

@@ -17,3 +17,4 @@ Use the bundled script `cluster-tls/generate.sh` to regenerate them.
 
 There are also three more service exposed, one for the Kong Manager and Kong Admin API and one for the Developer Portal and Developer
 Portal API, one more is an internal service for the intra communication between Kong CP and Kong DP.
+

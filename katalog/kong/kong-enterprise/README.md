@@ -66,3 +66,4 @@ spec:
           command: [ "/bin/sh", "-c", "kong migrations finish" ]
       restartPolicy: OnFailure
 ```
+
