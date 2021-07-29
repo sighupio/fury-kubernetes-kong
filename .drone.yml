@@ -1,220 +1,295 @@
+# Copyright (c) 2021 SIGHUP s.r.l All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+
+kind: pipeline
+name: license
+
+steps:
+  - name: check
+    image: docker.io/library/golang:1.16
+    pull: always
+    commands:
+      - go get -u github.com/google/addlicense
+      - addlicense -c "SIGHUP s.r.l" -v -l bsd --check .
 ---
 kind: pipeline
-name: e2e-kubernetes-1.16
+name: policeman
+
+depends_on:
+  - license
 
 platform:
   os: linux
   arch: amd64
 
 steps:
-  - name: init
-    image: quay.io/sighup/e2e-testing-drone-plugin:v0.2.1
+  - name: lint
+    image: quay.io/sighup/policeman
     pull: always
-    volumes:
-      - name: shared
-        path: /shared
-    depends_on: [ clone ]
-    settings:
-      action: custom-cluster-116
-      pipeline_id: cluster-116
-      local_kind_config_path: katalog/tests/config/kind-config
-      cluster_version: '1.16.9'
-      instance_path: /shared
-      aws_default_region:
-        from_secret: aws_region
-      aws_access_key_id:
-        from_secret: aws_access_key_id
-      aws_secret_access_key:
-        from_secret: aws_secret_access_key
-      terraform_tf_states_bucket_name:
-        from_secret: terraform_tf_states_bucket_name
+    environment:
+      # Identifies false positives like missing 'selector'. On Kustomize is common to don't set them
+      VALIDATE_KUBERNETES_KUBEVAL: "false"
+      # We use a lot of copy paste in our code, is intended. So it important to don't use this linter
+      VALIDATE_JSCPD: "false"
+    depends_on:
+      - clone
 
-  - name: e2e
-    image: quay.io/sighup/e2e-testing:1.1.0_0.1.3_2.16.1_1.4.0_1.16.3_3.2.2_2.4.1
+  - name: render
+    image: quay.io/sighup/e2e-testing:1.1.0_0.2.2_2.16.1_1.9.4_1.18.19_3.8.7_2.4.1
     pull: always
-    volumes:
-      - name: shared
-        path: /shared
-    depends_on: [ init ]
+    depends_on:
+      - clone
     commands:
-      - export INSTANCE_IP=$(cat /shared/machine/ip)
-      - export KUBECONFIG=/shared/kube/kubeconfig-116
-      - bats -t katalog/tests/kong.sh
+      - kustomize build katalog/kong/kong-db > kong-db.yml
+      - kustomize build katalog/kong/kong-dbless > kong-dbless.yml
+      - kustomize build katalog/kong/kong-enterprise > kong-enterprise.yml
+      - kustomize build katalog/kong/kong-enterprise-hybrid > kong-enterprise-hybrid.yml
+      - kustomize build katalog/kong/kong-enterprise-k8s > kong-enterprise-k8s.yml
 
-
-  - name: destroy
-    image: quay.io/sighup/e2e-testing-drone-plugin:v0.2.1
+  - &deprek8ion
+    name: deprek8ion-kong-db
+    image: eu.gcr.io/swade1987/deprek8ion:1.1.34
     pull: always
-    depends_on: [ e2e ]
-    settings:
-      action: destroy
-      pipeline_id: cluster-116
-      aws_default_region:
-        from_secret: aws_region
-      aws_access_key_id:
-        from_secret: aws_access_key_id
-      aws_secret_access_key:
-        from_secret: aws_secret_access_key
-      terraform_tf_states_bucket_name:
-        from_secret: terraform_tf_states_bucket_name
-    when:
-      status:
-        - success
-        - failure
-
-volumes:
-  - name: shared
-    temp: {}
-
-trigger:
-  ref:
-    include:
-      - refs/heads/hotfix-*
-      - refs/tags/**
-
----
-kind: pipeline
-name: e2e-kubernetes-1.15
-
-platform:
-  os: linux
-  arch: amd64
-
-steps:
-  - name: init
-    image: quay.io/sighup/e2e-testing-drone-plugin:v0.3.2
-    pull: always
-    volumes:
-      - name: shared
-        path: /shared
-    depends_on: [ clone ]
-    settings:
-      action: custom-cluster-115
-      pipeline_id: cluster-115
-      local_kind_config_path: katalog/tests/config/kind-config
-      cluster_version: '1.15.11'
-      instance_path: /shared
-      aws_default_region:
-        from_secret: aws_region
-      aws_access_key_id:
-        from_secret: aws_access_key_id
-      aws_secret_access_key:
-        from_secret: aws_secret_access_key
-      terraform_tf_states_bucket_name:
-        from_secret: terraform_tf_states_bucket_name
-
-  - name: e2e
-    image: quay.io/sighup/e2e-testing:1.1.0_0.1.3_2.16.1_1.4.0_1.15.6_3.2.2_2.4.1
-    pull: always
-    volumes:
-      - name: shared
-        path: /shared
-    depends_on: [ init ]
+    environment:
+      KUBERNETES_MANIFESTS: kong-db.yml
+    depends_on:
+      - render
     commands:
-      - export INSTANCE_IP=$(cat /shared/machine/ip)
-      - export KUBECONFIG=/shared/kube/kubeconfig-115
-      - bats -t katalog/tests/kong.sh
+      - /conftest test -p /policies $${KUBERNETES_MANIFESTS}
 
-  - name: destroy
-    image: quay.io/sighup/e2e-testing-drone-plugin:v0.2.1
-    pull: always
-    depends_on: [ e2e ]
-    settings:
-      action: destroy
-      pipeline_id: cluster-115
-      aws_default_region:
-        from_secret: aws_region
-      aws_access_key_id:
-        from_secret: aws_access_key_id
-      aws_secret_access_key:
-        from_secret: aws_secret_access_key
-      terraform_tf_states_bucket_name:
-        from_secret: terraform_tf_states_bucket_name
-    when:
-      status:
-        - success
-        - failure
+  - <<: *deprek8ion
+    name: deprek8ion-kong-dbless
+    environment:
+      KUBERNETES_MANIFESTS: kong-dbless.yml
 
-volumes:
-  - name: shared
-    temp: {}
+  - <<: *deprek8ion
+    name: deprek8ion-kong-enterprise-hybrid
+    environment:
+      KUBERNETES_MANIFESTS: kong-enterprise-hybrid.yml
 
-trigger:
-  ref:
-    include:
-      - refs/heads/hotfix-*
-      - refs/tags/**
+  - <<: *deprek8ion
+    name: deprek8ion-kong-enterprise-k8s
+    environment:
+      KUBERNETES_MANIFESTS: kong-enterprise-k8s.yml
 
----
-kind: pipeline
-name: e2e-kubernetes-1.14
-
-platform:
-  os: linux
-  arch: amd64
-
-steps:
-  - name: init
-    image: quay.io/sighup/e2e-testing-drone-plugin:v0.3.2
-    pull: always
-    volumes:
-      - name: shared
-        path: /shared
-    depends_on: [ clone ]
-    settings:
-      action: custom-cluster-114
-      pipeline_id: cluster-114
-      local_kind_config_path: katalog/tests/config/kind-config
-      cluster_version: '1.14.10'
-      instance_path: /shared
-      aws_default_region:
-        from_secret: aws_region
-      aws_access_key_id:
-        from_secret: aws_access_key_id
-      aws_secret_access_key:
-        from_secret: aws_secret_access_key
-      terraform_tf_states_bucket_name:
-        from_secret: terraform_tf_states_bucket_name
-
-  - name: e2e
-    image: quay.io/sighup/e2e-testing:1.1.0_0.1.3_2.16.1_1.4.0_1.14.9_3.2.2_2.4.1
-    pull: always
-    volumes:
-      - name: shared
-        path: /shared
-    depends_on: [ init ]
-    commands:
-      - export INSTANCE_IP=$(cat /shared/machine/ip)
-      - export KUBECONFIG=/shared/kube/kubeconfig-114
-      - bats -t katalog/tests/kong.sh
-
-
-  - name: destroy
-    image: quay.io/sighup/e2e-testing-drone-plugin:v0.3.2
-    pull: always
-    depends_on: [ e2e ]
-    settings:
-      action: destroy
-      pipeline_id: cluster-114
-      aws_default_region:
-        from_secret: aws_region
-      aws_access_key_id:
-        from_secret: aws_access_key_id
-      aws_secret_access_key:
-        from_secret: aws_secret_access_key
-      terraform_tf_states_bucket_name:
-        from_secret: terraform_tf_states_bucket_name
-    when:
-      status:
-        - success
-        - failure
-
-volumes:
-  - name: shared
-    temp: {}
-
-trigger:
-  ref:
-    include:
-      - refs/heads/hotfix-*
-      - refs/tags/**
+#---
+#kind: pipeline
+#name: e2e-kubernetes-1.16
+#
+#platform:
+#  os: linux
+#  arch: amd64
+#
+#steps:
+#  - name: init
+#    image: quay.io/sighup/e2e-testing-drone-plugin:v0.2.1
+#    pull: always
+#    volumes:
+#      - name: shared
+#        path: /shared
+#    depends_on: [ clone ]
+#    settings:
+#      action: custom-cluster-116
+#      pipeline_id: cluster-116
+#      local_kind_config_path: katalog/tests/config/kind-config
+#      cluster_version: '1.16.9'
+#      instance_path: /shared
+#      aws_default_region:
+#        from_secret: aws_region
+#      aws_access_key_id:
+#        from_secret: aws_access_key_id
+#      aws_secret_access_key:
+#        from_secret: aws_secret_access_key
+#      terraform_tf_states_bucket_name:
+#        from_secret: terraform_tf_states_bucket_name
+#
+#  - name: e2e
+#    image: quay.io/sighup/e2e-testing:1.1.0_0.1.3_2.16.1_1.4.0_1.16.3_3.2.2_2.4.1
+#    pull: always
+#    volumes:
+#      - name: shared
+#        path: /shared
+#    depends_on: [ init ]
+#    commands:
+#      - export INSTANCE_IP=$(cat /shared/machine/ip)
+#      - export KUBECONFIG=/shared/kube/kubeconfig-116
+#      - bats -t katalog/tests/kong.sh
+#
+#
+#  - name: destroy
+#    image: quay.io/sighup/e2e-testing-drone-plugin:v0.2.1
+#    pull: always
+#    depends_on: [ e2e ]
+#    settings:
+#      action: destroy
+#      pipeline_id: cluster-116
+#      aws_default_region:
+#        from_secret: aws_region
+#      aws_access_key_id:
+#        from_secret: aws_access_key_id
+#      aws_secret_access_key:
+#        from_secret: aws_secret_access_key
+#      terraform_tf_states_bucket_name:
+#        from_secret: terraform_tf_states_bucket_name
+#    when:
+#      status:
+#        - success
+#        - failure
+#
+#volumes:
+#  - name: shared
+#    temp: {}
+#
+#trigger:
+#  ref:
+#    include:
+#      - refs/heads/hotfix-*
+#      - refs/tags/**
+#
+#---
+#kind: pipeline
+#name: e2e-kubernetes-1.15
+#
+#platform:
+#  os: linux
+#  arch: amd64
+#
+#steps:
+#  - name: init
+#    image: quay.io/sighup/e2e-testing-drone-plugin:v0.3.2
+#    pull: always
+#    volumes:
+#      - name: shared
+#        path: /shared
+#    depends_on: [ clone ]
+#    settings:
+#      action: custom-cluster-115
+#      pipeline_id: cluster-115
+#      local_kind_config_path: katalog/tests/config/kind-config
+#      cluster_version: '1.15.11'
+#      instance_path: /shared
+#      aws_default_region:
+#        from_secret: aws_region
+#      aws_access_key_id:
+#        from_secret: aws_access_key_id
+#      aws_secret_access_key:
+#        from_secret: aws_secret_access_key
+#      terraform_tf_states_bucket_name:
+#        from_secret: terraform_tf_states_bucket_name
+#
+#  - name: e2e
+#    image: quay.io/sighup/e2e-testing:1.1.0_0.1.3_2.16.1_1.4.0_1.15.6_3.2.2_2.4.1
+#    pull: always
+#    volumes:
+#      - name: shared
+#        path: /shared
+#    depends_on: [ init ]
+#    commands:
+#      - export INSTANCE_IP=$(cat /shared/machine/ip)
+#      - export KUBECONFIG=/shared/kube/kubeconfig-115
+#      - bats -t katalog/tests/kong.sh
+#
+#  - name: destroy
+#    image: quay.io/sighup/e2e-testing-drone-plugin:v0.2.1
+#    pull: always
+#    depends_on: [ e2e ]
+#    settings:
+#      action: destroy
+#      pipeline_id: cluster-115
+#      aws_default_region:
+#        from_secret: aws_region
+#      aws_access_key_id:
+#        from_secret: aws_access_key_id
+#      aws_secret_access_key:
+#        from_secret: aws_secret_access_key
+#      terraform_tf_states_bucket_name:
+#        from_secret: terraform_tf_states_bucket_name
+#    when:
+#      status:
+#        - success
+#        - failure
+#
+#volumes:
+#  - name: shared
+#    temp: {}
+#
+#trigger:
+#  ref:
+#    include:
+#      - refs/heads/hotfix-*
+#      - refs/tags/**
+#
+#---
+#kind: pipeline
+#name: e2e-kubernetes-1.14
+#
+#platform:
+#  os: linux
+#  arch: amd64
+#
+#steps:
+#  - name: init
+#    image: quay.io/sighup/e2e-testing-drone-plugin:v0.3.2
+#    pull: always
+#    volumes:
+#      - name: shared
+#        path: /shared
+#    depends_on: [ clone ]
+#    settings:
+#      action: custom-cluster-114
+#      pipeline_id: cluster-114
+#      local_kind_config_path: katalog/tests/config/kind-config
+#      cluster_version: '1.14.10'
+#      instance_path: /shared
+#      aws_default_region:
+#        from_secret: aws_region
+#      aws_access_key_id:
+#        from_secret: aws_access_key_id
+#      aws_secret_access_key:
+#        from_secret: aws_secret_access_key
+#      terraform_tf_states_bucket_name:
+#        from_secret: terraform_tf_states_bucket_name
+#
+#  - name: e2e
+#    image: quay.io/sighup/e2e-testing:1.1.0_0.1.3_2.16.1_1.4.0_1.14.9_3.2.2_2.4.1
+#    pull: always
+#    volumes:
+#      - name: shared
+#        path: /shared
+#    depends_on: [ init ]
+#    commands:
+#      - export INSTANCE_IP=$(cat /shared/machine/ip)
+#      - export KUBECONFIG=/shared/kube/kubeconfig-114
+#      - bats -t katalog/tests/kong.sh
+#
+#
+#  - name: destroy
+#    image: quay.io/sighup/e2e-testing-drone-plugin:v0.3.2
+#    pull: always
+#    depends_on: [ e2e ]
+#    settings:
+#      action: destroy
+#      pipeline_id: cluster-114
+#      aws_default_region:
+#        from_secret: aws_region
+#      aws_access_key_id:
+#        from_secret: aws_access_key_id
+#      aws_secret_access_key:
+#        from_secret: aws_secret_access_key
+#      terraform_tf_states_bucket_name:
+#        from_secret: terraform_tf_states_bucket_name
+#    when:
+#      status:
+#        - success
+#        - failure
+#
+#volumes:
+#  - name: shared
+#    temp: {}
+#
+#trigger:
+#  ref:
+#    include:
+#      - refs/heads/hotfix-*
+#      - refs/tags/**
