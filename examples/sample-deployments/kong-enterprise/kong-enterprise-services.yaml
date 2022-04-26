@@ -13,16 +13,16 @@ spec:
   ports:
     - name: portal
       nodePort: 30803
-      port: 8003
+      port: 80
       protocol: TCP
       targetPort: 8003
     - name: portal-api
       nodePort: 30804
-      port: 8004
+      port: 8080
       protocol: TCP
       targetPort: 8004
   selector:
-    app: ingress-kong
+    app: ingress-kong-dp
   type: NodePort
 ---
 apiVersion: v1
@@ -35,12 +35,12 @@ spec:
   ports:
   - name: admin
     nodePort: 30801
-    port: 8001
+    port: 8080
     protocol: TCP
     targetPort: 8001
-  - name: manager
+  - name: admin-gui
     nodePort: 30802
-    port: 8002
+    port: 80
     protocol: TCP
     targetPort: 8002
   selector:
