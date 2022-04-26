@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SIGHUP s.r.l All rights reserved.
+# Copyright (c) 2022 SIGHUP s.r.l All rights reserved.
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
@@ -7,9 +7,19 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - namespace.yaml
-  - custom-types.yaml
-  - rbac.yaml
-  - service.yaml
-  - validation-service.yaml
-  - kong-ingress-dbless.yaml
+  - crd/kongclusterplugins.configuration.konghq.com-crd.yaml
+  - crd/kongconsumers.configuration.konghq.com-crd.yaml
+  - crd/kongingresses.configuration.konghq.com-crd.yaml
+  - crd/kongplugins.configuration.konghq.com-crd.yaml
+  - crd/tcpingresses.configuration.konghq.com-crd.yaml
+  - crd/udpingresses.configuration.konghq.com-crd.yaml
+  - ingress-kong-deployment.yaml
+  - kong-ingress-cr.yaml
+  - kong-ingress-crb.yaml
+  - kong-ingressclass.yaml
+  - kong-leader-election-rb.yaml
+  - kong-leader-election-role.yaml
+  - kong-namespace.yaml
+  - kong-proxy-svc.yaml
+  - kong-serviceaccount-sa.yaml
+  - kong-validation-webhook-svc.yaml

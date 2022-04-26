@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -14,84 +13,79 @@ spec:
   template:
     metadata:
       annotations:
-        prometheus.io/port: "8100"
-        prometheus.io/scrape: "true"
-        traffic.sidecar.istio.io/includeInboundPorts: ""
         kuma.io/gateway: enabled
+        traffic.sidecar.istio.io/includeInboundPorts: ""
       labels:
         app: ingress-kong
     spec:
-      serviceAccountName: kong-serviceaccount
       containers:
-      - name: proxy
-        image: kong:2.4
-        env:
-          # servers
+      - env:
         - name: KONG_PROXY_LISTEN
           value: 0.0.0.0:8000, 0.0.0.0:8443 ssl http2
         - name: KONG_PORT_MAPS
-          value: "80:8000, 443:8443"
+          value: 80:8000, 443:8443
         - name: KONG_ADMIN_LISTEN
           value: 127.0.0.1:8444 ssl
         - name: KONG_STATUS_LISTEN
           value: 0.0.0.0:8100
-          # DB
         - name: KONG_DATABASE
           value: "off"
-          # runtime tweaks
         - name: KONG_NGINX_WORKER_PROCESSES
           value: "2"
-          # logging
+        - name: KONG_KIC
+          value: "on"
         - name: KONG_ADMIN_ACCESS_LOG
           value: /dev/stdout
         - name: KONG_ADMIN_ERROR_LOG
           value: /dev/stderr
-        # - name: KONG_PROXY_ACCESS_LOG
-        # - value: /dev/stdout
         - name: KONG_PROXY_ERROR_LOG
           value: /dev/stderr
+        image: kong:2.8
         lifecycle:
           preStop:
             exec:
-              command: [ "/bin/sh", "-c", "kong quit" ]
-        ports:
-        - name: proxy
-          containerPort: 8000
-          protocol: TCP
-        - name: proxy-ssl
-          containerPort: 8443
-          protocol: TCP
-        - name: metrics
-          containerPort: 8100
-          protocol: TCP
+              command:
+              - /bin/sh
+              - -c
+              - kong quit
         livenessProbe:
+          failureThreshold: 3
           httpGet:
             path: /status
             port: 8100
             scheme: HTTP
           initialDelaySeconds: 5
-          timeoutSeconds: 1
           periodSeconds: 10
           successThreshold: 1
-          failureThreshold: 3
+          timeoutSeconds: 1
+        name: proxy
+        ports:
+        - containerPort: 8000
+          name: proxy
+          protocol: TCP
+        - containerPort: 8443
+          name: proxy-ssl
+          protocol: TCP
+        - containerPort: 8100
+          name: metrics
+          protocol: TCP
         readinessProbe:
+          failureThreshold: 3
           httpGet:
             path: /status
             port: 8100
             scheme: HTTP
           initialDelaySeconds: 5
-          timeoutSeconds: 1
           periodSeconds: 10
           successThreshold: 1
-          failureThreshold: 3
-      - name: ingress-controller
-        env:
+          timeoutSeconds: 1
+      - env:
         - name: CONTROLLER_KONG_ADMIN_URL
-          value: "https://127.0.0.1:8444"
+          value: https://127.0.0.1:8444
         - name: CONTROLLER_KONG_ADMIN_TLS_SKIP_VERIFY
           value: "true"
         - name: CONTROLLER_PUBLISH_SERVICE
-          value: "kong/kong-proxy"
+          value: kong/kong-proxy
         - name: POD_NAME
           valueFrom:
             fieldRef:
@@ -102,29 +96,34 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.namespace
-        image: kong/kubernetes-ingress-controller:1.3
+        image: kong/kubernetes-ingress-controller:2.3.1
         imagePullPolicy: IfNotPresent
-        ports:
-        - name: webhook
-          containerPort: 8080
-          protocol: TCP
         livenessProbe:
+          failureThreshold: 3
           httpGet:
             path: /healthz
             port: 10254
             scheme: HTTP
           initialDelaySeconds: 5
-          timeoutSeconds: 1
           periodSeconds: 10
           successThreshold: 1
-          failureThreshold: 3
+          timeoutSeconds: 1
+        name: ingress-controller
+        ports:
+        - containerPort: 8080
+          name: webhook
+          protocol: TCP
+        - containerPort: 10255
+          name: cmetrics
+          protocol: TCP
         readinessProbe:
+          failureThreshold: 3
           httpGet:
-            path: /healthz
+            path: /readyz
             port: 10254
             scheme: HTTP
           initialDelaySeconds: 5
-          timeoutSeconds: 1
           periodSeconds: 10
           successThreshold: 1
-          failureThreshold: 3
+          timeoutSeconds: 1
+      serviceAccountName: kong-serviceaccount
