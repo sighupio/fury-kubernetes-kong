@@ -7,8 +7,6 @@ apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
 metadata:
   name: basic-auth
-  annotations:
-    kubernetes.io/ingress.class: kong
 config:
   hide_credentials: true
 plugin: basic-auth

@@ -3,19 +3,22 @@
 # license that can be found in the LICENSE file.
 
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: public-petstore
   annotations:
-    kubernetes.io/ingress.class: kong
-    konghq.com/override: route-customization
-    konghq.com/plugins: request-id,rate-limiting,prometheus
+     konghq.com/override: route-methods
+     konghq.com/plugins: prometheus
 spec:
+  ingressClassName: kong
   rules:
     - http:
         paths:
           - path: /pet
+            pathType: Prefix
             backend:
-              serviceName: petstore
-              servicePort: 8080
+              service:
+                name: petstore
+                port:
+                  number: 8080

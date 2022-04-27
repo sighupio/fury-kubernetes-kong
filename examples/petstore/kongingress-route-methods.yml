@@ -6,10 +6,7 @@
 apiVersion: configuration.konghq.com/v1
 kind: KongIngress
 metadata:
-  name: proxy
-  annotations:
-    kubernetes.io/ingress.class: kong
-proxy:
-  path: /api/
+  name: route-methods
 route:
-  strip_path: false
+  methods:
+    - GET

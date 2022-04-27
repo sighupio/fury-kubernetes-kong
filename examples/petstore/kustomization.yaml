@@ -9,16 +9,10 @@ kind: Kustomization
 namespace: petstore
 
 resources:
+  - ns.yml
+  - kong-plugin-prometheus.yml
+  - kongingress-route-methods.yml
+  - kongingress-service.yml
+  - petstore-public-ingress.yml
   - petstore-deployment.yml
   - petstore-service.yml
-  - petstore-public-ingress.yml
-  - petstore-public-ingress-2.yml
-  - petstore-private-ingress.yml
-  - kong-plugin-request-id.yml
-  - kong-plugin-rate-limit.yml
-  - kong-configuration-proxy.yml
-  - kong-consumer-basic-auth.yml
-  - kong-plugin-basic-auth.yml
-  - kong-configuration-route-customization.yml
-  - kong-plugin-prometheus.yml
-  - ns.yml

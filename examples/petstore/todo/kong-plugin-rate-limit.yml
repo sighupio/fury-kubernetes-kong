@@ -4,11 +4,11 @@
 
 ---
 apiVersion: configuration.konghq.com/v1
-kind: KongIngress
+kind: KongPlugin
 metadata:
-  name: route-customization
-  annotations:
-    kubernetes.io/ingress.class: kong
-route:
-  methods:
-    - GET
+  name: rate-limiting
+config:
+  minute: 5
+  limit_by: ip
+  policy: local
+plugin: rate-limiting
