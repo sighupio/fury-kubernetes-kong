@@ -11,8 +11,14 @@ namespace: petstore
 resources:
   - ns.yml
   - kong-plugin-prometheus.yml
+  - kong-plugin-correlation-id.yml
+  - kong-plugin-rate-limiting.yml
+  - kong-plugin-basic-auth.yml
+  - kong-consumer-basic-auth.yml
   - kongingress-route-methods.yml
   - kongingress-service.yml
-  - petstore-public-ingress.yml
+  - petstore-public-ingress-pet.yml
+  - petstore-private-ingress-user.yml
+  - petstore-public-ingress-host.yml
   - petstore-deployment.yml
   - petstore-service.yml

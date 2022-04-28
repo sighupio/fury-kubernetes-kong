@@ -4,7 +4,11 @@
 
 ---
 apiVersion: configuration.konghq.com/v1
-kind: KongPlugin
+kind: KongClusterPlugin
 metadata:
   name: prometheus
+  labels:
+    global: "true"
+  annotations:
+    kubernetes.io/ingress.class: kong
 plugin: prometheus

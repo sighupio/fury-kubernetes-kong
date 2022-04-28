@@ -9,7 +9,7 @@ metadata:
   name: public-petstore
   annotations:
      konghq.com/override: route-methods
-     konghq.com/plugins: prometheus
+     konghq.com/plugins: correlation-id,rate-limiting
 spec:
   ingressClassName: kong
   rules:
