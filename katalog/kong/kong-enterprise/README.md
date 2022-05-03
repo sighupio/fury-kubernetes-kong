@@ -66,32 +66,3 @@ spec:
           command: [ "/bin/sh", "-c", "kong migrations finish" ]
       restartPolicy: OnFailure
 ```
-
-## Development Notes
-
-```bash
-echo "mac.local 127.0.0.1" >> /etc/hosts
-echo "api.mac.local 127.0.0.1" >> /etc/hosts
-echo "manager.mac.local 127.0.0.1" >> /etc/hosts
-```
-
-Configuration files:
-
-```bash
-KONG_PORTAL_GUI_HOST=manager.mac.local:8080
-KONG_PORTAL_API_URL=http://mac.local:8081
-KONG_ADMIN_API_URI=http://api.mac.local:9091
-KONG_ADMIN_GUI_URL=http://manager.mac.local:8080
-```
-
-### KONG_ADMIN_API_URI
-
-```bash
-kubectl port-forward -n kong svc/kong-admin 9091:8080 &
-```
-
-### KONG_PORTAL_GUI_HOST
-
-```bash
-kubectl port-forward -n kong svc/kong-admin 8080:80 &
-```
