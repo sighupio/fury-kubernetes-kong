@@ -138,7 +138,7 @@ steps:
     depends_on: [ init ]
     commands:
       - export KUBECONFIG=/shared/kube/kubeconfig-120
-      - kubectl config view | yq '.clusters[0].cluster.server' | cut -d"/" -f3 | cut -d":" -f1 > node_ip
+      - kubectl config view | yq ".clusters[0].cluster.server" | cut -d"/" -f3 | cut -d":" -f1 > node_ip
       - export INSTANCE_IP=$(cat node_ip)
       - bats -t katalog/tests/tests.sh
 
@@ -239,7 +239,7 @@ steps:
     depends_on: [ init ]
     commands:
       - export KUBECONFIG=/shared/kube/kubeconfig-121
-      - kubectl config view | yq '.clusters[0].cluster.server' | cut -d"/" -f3 | cut -d":" -f1 > node_ip
+      - kubectl config view | yq ".clusters[0].cluster.server" | cut -d"/" -f3 | cut -d":" -f1 > node_ip
       - export INSTANCE_IP=$(cat node_ip)
       - bats -t katalog/tests/tests.sh
 
@@ -340,7 +340,7 @@ steps:
     depends_on: [ init ]
     commands:
       - export KUBECONFIG=/shared/kube/kubeconfig-122
-      - kubectl config view | yq '.clusters[0].cluster.server' | cut -d"/" -f3 | cut -d":" -f1 > node_ip
+      - kubectl config view | yq ".clusters[0].cluster.server" | cut -d"/" -f3 | cut -d":" -f1 > node_ip
       - export INSTANCE_IP=$(cat node_ip)
       - bats -t katalog/tests/tests.sh
 
@@ -441,7 +441,7 @@ steps:
     depends_on: [ init ]
     commands:
       - export KUBECONFIG=/shared/kube/kubeconfig-123
-      - kubectl config view | yq '.clusters[0].cluster.server' | cut -d"/" -f3 | cut -d":" -f1 > node_ip
+      - kubectl config view | yq ".clusters[0].cluster.server" | cut -d"/" -f3 | cut -d":" -f1 > node_ip
       - export INSTANCE_IP=$(cat node_ip)
       - bats -t katalog/tests/tests.sh
 
