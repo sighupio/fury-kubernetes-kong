@@ -139,7 +139,7 @@ steps:
     commands:
       - export KUBECONFIG=/shared/kube/kubeconfig-120
       - export INSTANCE_IP=$(kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].address}')
-      - bats -t katalog/tests/kong.sh
+      - bats -t katalog/tests/tests.sh
 
   - name: destroy
     image: quay.io/sighup/e2e-testing-drone-plugin:v0.13.0
@@ -239,7 +239,7 @@ steps:
     commands:
       - export KUBECONFIG=/shared/kube/kubeconfig-121
       - export INSTANCE_IP=$(kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].address}')
-      - bats -t katalog/tests/kong.sh
+      - bats -t katalog/tests/tests.sh
 
   - name: destroy
     image: quay.io/sighup/e2e-testing-drone-plugin:v0.13.0
@@ -339,7 +339,7 @@ steps:
     commands:
       - export KUBECONFIG=/shared/kube/kubeconfig-122
       - export INSTANCE_IP=$(kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].address}')
-      - bats -t katalog/tests/kong.sh
+      - bats -t katalog/tests/tests.sh
 
   - name: destroy
     image: quay.io/sighup/e2e-testing-drone-plugin:v0.13.0
@@ -439,7 +439,7 @@ steps:
     commands:
       - export KUBECONFIG=/shared/kube/kubeconfig-123
       - export INSTANCE_IP=$(kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].address}')
-      - bats -t katalog/tests/kong.sh
+      - bats -t katalog/tests/tests.sh
 
   - name: destroy
     image: quay.io/sighup/e2e-testing-drone-plugin:v0.13.0
