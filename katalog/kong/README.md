@@ -17,7 +17,7 @@ between control plane and data plane and adds the secret generation for the TLS 
 
 ## Requirements
 
-- Kubernetes >= `1.20.0`
+- Kubernetes - See module compatibility matrix
 - Kustomize >= `v3.5.3`
 
 
