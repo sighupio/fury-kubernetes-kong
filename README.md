@@ -9,7 +9,7 @@
 
 <!-- <KFD-DOCS> -->
 
-*Kubernetes Fury Kong* contains Kong Ingress Controller for Kubernetes and all the possible deployment options as an
+**Kubernetes Fury Kong** contains Kong Ingress Controller for Kubernetes and all the possible deployment options as an
 add-on for [Kubernetes Fury Distribution (KFD)][kfd-repo].
 
 ## Compatibility
