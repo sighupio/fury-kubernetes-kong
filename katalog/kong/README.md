@@ -17,7 +17,7 @@ between control plane and data plane and adds the secret generation for the TLS 
 
 ## Requirements
 
-- Kubernetes - See module compatibility matrix
+- Kubernetes - See module [compatibility matrix](https://github.com/sighupio/fury-kubernetes-kong/blob/master/docs/COMPATIBILITY_MATRIX.md)
 - Kustomize >= `v3.5.3`
 
 
