@@ -25,17 +25,23 @@ Check the [compatibility matrix][compatibility-matrix] for additional informatio
 
 ### Open Source Packages
 
-- [kong-dbless](katalog/kong/kong-dbless): Default Kong Ingress, without DB. Ingress Version: **2.3.1**, Kong Version: **2.8.1**
-- [kong-db](katalog/kong/kong-db): Kong Ingress that uses a postgres db for persistence. Ingress Version: **2.3.1**, Kong Version: **2.8.1**
+The following Open Source Packages packages are included in the Fury Kubernetes Kong add-on module:
+
+| Package                                              | KIC Version  | Kong Version | Description                                           |
+|------------------------------------------------------|--------------|--------------|-------------------------------------------------------|
+| [kong-dbless](katalog/kong/kong-dbless)              | `2.3.1`      | `2.8.1`      | Default Kong Ingress, without DB.                     |
+| [kong-db](katalog/kong/kong-db)                      | `2.3.1`      | `2.8.1`      | Kong Ingress that uses a postgres db for persistence  |
+
 
 ### Enterprise Packages
 
-- [kong-enterprise](katalog/kong/kong-enterprise): The Kong Ingress Controller for Kubernetes with Kong Enterprise Edition.
-  Version: Ingress: **2.3.1**, Kong Enterprise: **2.8.1.0**
-- [kong-enterprise-hybrid](katalog/kong/kong-enterprise-hybrid): The Kong Ingress Controller for Kubernetes with Kong Enterprise Edition. Data Planes connected to Control Plane in Hybrid Mode.
-  Version: Ingress: **2.3.1**, Kong Enterprise: **2.8.1.0**
-- [kong-enterprise-k8s](katalog/kong/kong-enterprise-k8s): The Kong Ingress Controller for Kubernetes with Kong Enterprise Edition for K8s.
-  Version: Ingress: **2.3.1**, Kong Enterprise: **2.8.1.0**
+The following Enterprise packages are included in the Fury Kubernetes Kong add-on module:
+
+| Package                                                        | KIC Version  | Kong Version | Description                                                                                                                      |
+|----------------------------------------------------------------|--------------|--------------|----------------------------------------------------------------------------------------------------------------------------------|
+| [kong-enterprise](katalog/kong/kong-enterprise)                | `2.3.1`      | `2.8.1.0`    | The Kong Ingress Controller for Kubernetes with Kong Enterprise Edition.                                                         |
+| [kong-enterprise-hybrid](katalog/kong/kong-enterprise-hybrid)  | `2.3.1`      | `2.8.1.0`    | The Kong Ingress Controller for Kubernetes with Kong Enterprise Edition. Data Planes connected to Control Plane in Hybrid Mode.  |
+| [kong-enterprise-k8s](katalog/kong/kong-enterprise-k8s)        | `2.3.1`      | `2.8.1.0`    | The Kong Ingress Controller for Kubernetes with Kong Enterprise Edition for K8s.                                                 |
 
 <!-- Links -->
 
