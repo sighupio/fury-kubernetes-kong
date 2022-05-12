@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SIGHUP s.r.l All rights reserved.
+# Copyright (c) 2022 SIGHUP s.r.l All rights reserved.
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
@@ -9,16 +9,16 @@ kind: Kustomization
 namespace: petstore
 
 resources:
+  - ns.yml
+  - kong-plugin-prometheus.yml
+  - kong-plugin-correlation-id.yml
+  - kong-plugin-rate-limiting.yml
+  - kong-plugin-basic-auth.yml
+  - kong-consumer-basic-auth.yml
+  - kongingress-route-methods.yml
+  - kongingress-service.yml
+  - petstore-public-ingress-pet.yml
+  - petstore-private-ingress-user.yml
+  - petstore-public-ingress-host.yml
   - petstore-deployment.yml
   - petstore-service.yml
-  - petstore-public-ingress.yml
-  - petstore-public-ingress-2.yml
-  - petstore-private-ingress.yml
-  - kong-plugin-request-id.yml
-  - kong-plugin-rate-limit.yml
-  - kong-configuration-proxy.yml
-  - kong-consumer-basic-auth.yml
-  - kong-plugin-basic-auth.yml
-  - kong-configuration-route-customization.yml
-  - kong-plugin-prometheus.yml
-  - ns.yml

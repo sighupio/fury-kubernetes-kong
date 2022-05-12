@@ -1,0 +1,25 @@
+# Copyright (c) 2022 SIGHUP s.r.l All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: public-petstore-host
+  annotations:
+    konghq.com/plugins: correlation-id,rate-limiting
+    konghq.com/override: route-methods
+spec:
+  ingressClassName: kong
+  rules:
+    - host: awesome-kong.io
+      http:
+        paths:
+          - path: /store
+            pathType: Prefix
+            backend:
+              service:
+                name: petstore
+                port:
+                  number: 8080

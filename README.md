@@ -1,36 +1,68 @@
-# Fury Kubernetes Kong
+<h1>
+    <img src="https://github.com/sighupio/fury-distribution/blob/master/docs/assets/fury-epta-white.png?raw=true" align="left" width="90" style="margin-right: 15px"/>
+    Kubernetes Fury Kong
+</h1>
 
-This repo contains Kong Ingress Controller for Kubernetes.
+![Release](https://img.shields.io/badge/Latest%20Release-v2.8.1-blue)
+![License](https://img.shields.io/github/license/sighupio/fury-kubernetes-kong?label=License)
+![Slack](https://img.shields.io/badge/slack-@kubernetes/fury-yellow.svg?logo=slack&label=Slack)
 
-## Ingress Packages
+<!-- <KFD-DOCS> -->
 
-Following packages are included in Fury Kubernetes Kong katalog:
-
-- [kong](katalog/kong): The KONG Ingress Controller for Kubernetes
-provides delivery API Gateway for Kubernetes applications. Version: **1.3.1**
+**Kubernetes Fury Kong** contains Kong Ingress Controller for Kubernetes and all the possible deployment options as an
+add-on for [Kubernetes Fury Distribution (KFD)][kfd-repo].
 
 ## Compatibility
 
-| Module Version / Kubernetes Version |       1.18.X       |       1.19.X       |       1.20.X       |  1.21.X   |
-| ----------------------------------- | :----------------: | :----------------: | :----------------: | :-------: |
-| v1.0.0                              |                    |                    |                    |           |
-| v1.1.0                              | :white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: |
-| v2.0.0                              | :white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: |
+| Kubernetes Version |   Compatibility    | Notes                                               |
+|--------------------|:------------------:|-----------------------------------------------------|
+| `1.20.x`           | :white_check_mark: | No known issues                                     |
+| `1.21.x`           | :white_check_mark: | No known issues                                     |
+| `1.22.x`           | :white_check_mark: | No known issues                                     |
+| `1.23.x`           | :white_check_mark: | No known issues                                     |
 
-### Open Source
+Check the [compatibility matrix][compatibility-matrix] for additional information about previous releases of the modules.
 
-- [kong-dbless](katalog/kong/kong-dbless): Default Kong Ingress, without DB. Ingress Version: **1.3.1**, Kong Version: **2.3.2**
-- [kong-db](katalog/kong/kong-db): Kong Ingress that uses a postgres db for persistence. Ingress Version: **1.3.1**, Kong Version: **2.3.2**
+### Open Source Packages
 
-### Enterprise
+The following Open Source Packages packages are included in the Fury Kubernetes Kong add-on module:
 
-- [kong-enterprise](katalog/kong/kong-enterprise): The KONG Ingress Controller for Kubernetes with Kong Enterprise Edition.
-  Version: Ingress: **1.3.1**, Kong Enterprise: **2.4.1.1**
-- [kong-enterprise-hybrid](katalog/kong/kong-enterprise-hybrid): The KONG Ingress Controller for Kubernetes with Kong Enterprise Edition. Data Planes connected to Control Plane in Hybrid Mode.
-  Version: Ingress: **1.3.1**, Kong Enterprise: **2.4.1.1**
-- [kong-enterprise-k8s](katalog/kong/kong-enterprise-k8s): The KONG Ingress Controller for Kubernetes with Kong Enterprise Edition for K8s.
-  Version: Ingress: **1.3.1**, Kong Enterprise: **2.4.1.1**
+| Package                                              | KIC Version  | Kong Version | Description                                           |
+|------------------------------------------------------|--------------|--------------|-------------------------------------------------------|
+| [kong-dbless](katalog/kong/kong-dbless)              | `2.3.1`      | `2.8.1`      | Default Kong Ingress, without DB.                     |
+| [kong-db](katalog/kong/kong-db)                      | `2.3.1`      | `2.8.1`      | Kong Ingress that uses a postgres db for persistence  |
+
+
+### Enterprise Packages
+
+The following Enterprise packages are included in the Fury Kubernetes Kong add-on module:
+
+| Package                                                        | KIC Version  | Kong Version | Description                                                                                                                      |
+|----------------------------------------------------------------|--------------|--------------|----------------------------------------------------------------------------------------------------------------------------------|
+| [kong-enterprise](katalog/kong/kong-enterprise)                | `2.3.1`      | `2.8.1.0`    | The Kong Ingress Controller for Kubernetes with Kong Enterprise Edition.                                                         |
+| [kong-enterprise-hybrid](katalog/kong/kong-enterprise-hybrid)  | `2.3.1`      | `2.8.1.0`    | The Kong Ingress Controller for Kubernetes with Kong Enterprise Edition. Data Planes connected to Control Plane in Hybrid Mode.  |
+| [kong-enterprise-k8s](katalog/kong/kong-enterprise-k8s)        | `2.3.1`      | `2.8.1.0`    | The Kong Ingress Controller for Kubernetes with Kong Enterprise Edition for K8s.                                                 |
+
+<!-- Links -->
+
+[kfd-repo]: https://github.com/sighupio/fury-distribution
+[kfd-docs]: https://docs.kubernetesfury.com/docs/distribution/
+[compatibility-matrix]: https://github.com/sighupio/fury-kubernetes-kong/blob/master/docs/COMPATIBILITY_MATRIX.md
+
+<!-- </KFD-DOCS> -->
+
+<!-- <FOOTER> -->
+
+## Contributing
+
+Before contributing, please read first the [Contributing Guidelines](docs/CONTRIBUTING.md).
+
+### Reporting Issues
+
+In case you experience any problem with the module, please [open a new issue](https://github.com/sighupio/fury-kubernetes-kong/issues/new/choose).
 
 ## License
 
-For license details, please see [LICENSE](LICENSE)
+This module is open-source and it's released under the following [LICENSE](LICENSE)
+
+<!-- </FOOTER> -->

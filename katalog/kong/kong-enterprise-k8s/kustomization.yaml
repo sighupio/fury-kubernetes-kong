@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SIGHUP s.r.l All rights reserved.
+# Copyright (c) 2022 SIGHUP s.r.l All rights reserved.
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
@@ -14,7 +14,7 @@ patchesStrategicMerge:
 images:
   - name: registry.sighup.io/fury/kong
     newName: registry.sighup.io/fury/kong/kong-gateway
-    newTag: 2.4.1.1
+    newTag: 2.8.1.0
 
 secretGenerator:
   - name: kong-enterprise-license

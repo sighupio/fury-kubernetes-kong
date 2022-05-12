@@ -17,16 +17,16 @@ between control plane and data plane and adds the secret generation for the TLS 
 
 ## Requirements
 
-- Kubernetes >= `1.18.0`
-- Kustomize >= `v3`
+- Kubernetes - See module [compatibility matrix](https://github.com/sighupio/fury-kubernetes-kong/blob/master/docs/COMPATIBILITY_MATRIX.md)
+- Kustomize >= `v3.5.3`
 
 
 ## Image repository and tag
 
-* Kong image: `docker.io/library/kong:2.4`
-* Kong ingress controller image: `docker.io/kong/kubernetes-ingress-controller:1.3.1`
-* Kong Ingress Enterprise for K8s: `kong-docker-kong-enterprise-k8s.bintray.io/kong-enterprise-k8s:2.0.4.2-alpine`
-* Kong Enterprise: `kong-docker-kong-enterprise-edition-docker.bintray.io/kong-enterprise-edition:2.4.1.1-alpine`
+* Kong image: `docker.io/library/kong:2.8.1`
+* Kong ingress controller image: `docker.io/kong/kubernetes-ingress-controller:2.3.1`
+* Kong Ingress Enterprise for K8s: `docker.io/kong/kong-gateway:2.8.1.0`
+* Kong Enterprise: `docker.io/kong/kong-gateway:2.8.1.0`
 
 ## Configuration
 
@@ -45,7 +45,9 @@ Fury distribution Kong is deployed with following configuration:
 
 You can deploy Kong ingress controller by running following command in the selected architecture folder, remember to put your real secrets (or patch them):
 
-`$ kustomize build | kubectl apply -f -`
+```bash
+kustomize build | kubectl apply -f -
+```
 
 ## Alerts
 
