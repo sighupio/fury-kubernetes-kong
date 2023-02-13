@@ -1,9 +1,10 @@
-# Copyright (c) 2022 SIGHUP s.r.l All rights reserved.
+# Copyright (c) 2017-present SIGHUP s.r.l All rights reserved.
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
-kind: pipeline
 name: license
+kind: pipeline
+type: docker
 
 steps:
   - name: check
@@ -13,8 +14,9 @@ steps:
       - go get -u github.com/google/addlicense
       - addlicense -c "SIGHUP s.r.l" -v -l bsd --check .
 ---
-kind: pipeline
 name: policeman
+kind: pipeline
+type: docker
 
 depends_on:
   - license
@@ -50,34 +52,41 @@ steps:
       - kustomize build katalog/kong/kong-enterprise-hybrid > kong-enterprise-hybrid.yml
       - kustomize build katalog/kong/kong-enterprise-k8s > kong-enterprise-k8s.yml
 
-  - &deprek8ion
-    name: deprek8ion-kong-db
-    image: eu.gcr.io/swade1987/deprek8ion:1.1.34
+  - &pluto
+    name: check-deprecated-apis-kond-db
+    image: us-docker.pkg.dev/fairwinds-ops/oss/pluto:v5
     pull: always
-    environment:
-      KUBERNETES_MANIFESTS: kong-db.yml
     depends_on:
       - render
+    environment:
+      KUBERNETES_MANIFESTS: kong-db.yml
     commands:
-      - /conftest test -p /policies $${KUBERNETES_MANIFESTS}
+      # we use --ignore-deprecations because we don't want the CI to fail when the API has not been removed yet.
+      - /pluto detect $${KUBERNETES_MANIFESTS} --ignore-deprecations --target-versions=k8s=v1.23.0
 
-  - <<: *deprek8ion
-    name: deprek8ion-kong-dbless
+  - <<: *pluto
+    name: check-deprecated-apis-kong-dbless
     environment:
       KUBERNETES_MANIFESTS: kong-dbless.yml
 
-  - <<: *deprek8ion
-    name: deprek8ion-kong-enterprise-hybrid
+  - <<: *pluto
+    name: check-deprecated-apis-kong-enterprise
+    environment:
+      KUBERNETES_MANIFESTS: kong-enterprise.yml
+
+  - <<: *pluto
+    name: check-deprecated-apis-kong-enterprise-hybrid
     environment:
       KUBERNETES_MANIFESTS: kong-enterprise-hybrid.yml
 
-  - <<: *deprek8ion
-    name: deprek8ion-kong-enterprise-k8s
+  - <<: *pluto
+    name: check-deprecated-apis-kong-enterprise-k8s
     environment:
       KUBERNETES_MANIFESTS: kong-enterprise-k8s.yml
 ---
-kind: pipeline
 name: e2e-kubernetes-1.20
+kind: pipeline
+type: docker
 
 depends_on:
   - policeman
@@ -100,14 +109,14 @@ steps:
     image: quay.io/sighup/e2e-testing-drone-plugin:v0.13.0
     pull: always
     volumes:
-    - name: shared
-      path: /shared
-    depends_on: [ clone ]
+      - name: shared
+        path: /shared
+    depends_on: [clone]
     settings:
       action: custom-cluster-120
       pipeline_id: cluster-120
       local_kind_config_path: katalog/tests/kind/config.yml
-      cluster_version: '1.20.7'
+      cluster_version: "1.20.7"
       instance_path: /shared
       instance_size: 2-extra-large
       aws_default_region:
@@ -133,9 +142,9 @@ steps:
     image: quay.io/sighup/e2e-testing:1.1.0_0.7.0_3.1.1_1.9.4_1.23.5_3.8.7_4.21.1
     pull: always
     volumes:
-    - name: shared
-      path: /shared
-    depends_on: [ init ]
+      - name: shared
+        path: /shared
+    depends_on: [init]
     commands:
       - export KUBECONFIG=/shared/kube/kubeconfig-120
       - kubectl config view | yq ".clusters[0].cluster.server" | cut -d"/" -f3 | cut -d":" -f1 > node_ip
@@ -145,7 +154,7 @@ steps:
   - name: destroy
     image: quay.io/sighup/e2e-testing-drone-plugin:v0.13.0
     pull: always
-    depends_on: [ e2e ]
+    depends_on: [e2e]
     settings:
       action: destroy
       pipeline_id: cluster-120
@@ -169,16 +178,17 @@ steps:
         from_secret: dockerhub_password
     when:
       status:
-      - success
-      - failure
+        - success
+        - failure
 
 volumes:
-- name: shared
-  temp: {}
+  - name: shared
+    temp: {}
 
 ---
-kind: pipeline
 name: e2e-kubernetes-1.21
+kind: pipeline
+type: docker
 
 depends_on:
   - policeman
@@ -201,14 +211,14 @@ steps:
     image: quay.io/sighup/e2e-testing-drone-plugin:v0.13.0
     pull: always
     volumes:
-    - name: shared
-      path: /shared
-    depends_on: [ clone ]
+      - name: shared
+        path: /shared
+    depends_on: [clone]
     settings:
       action: custom-cluster-121
       pipeline_id: cluster-121
       local_kind_config_path: katalog/tests/kind/config.yml
-      cluster_version: '1.21.1'
+      cluster_version: "1.21.1"
       instance_path: /shared
       instance_size: 2-extra-large
       aws_default_region:
@@ -234,9 +244,9 @@ steps:
     image: quay.io/sighup/e2e-testing:1.1.0_0.7.0_3.1.1_1.9.4_1.23.5_3.8.7_4.21.1
     pull: always
     volumes:
-    - name: shared
-      path: /shared
-    depends_on: [ init ]
+      - name: shared
+        path: /shared
+    depends_on: [init]
     commands:
       - export KUBECONFIG=/shared/kube/kubeconfig-121
       - kubectl config view | yq ".clusters[0].cluster.server" | cut -d"/" -f3 | cut -d":" -f1 > node_ip
@@ -246,7 +256,7 @@ steps:
   - name: destroy
     image: quay.io/sighup/e2e-testing-drone-plugin:v0.13.0
     pull: always
-    depends_on: [ e2e ]
+    depends_on: [e2e]
     settings:
       action: destroy
       pipeline_id: cluster-121
@@ -270,16 +280,17 @@ steps:
         from_secret: dockerhub_password
     when:
       status:
-      - success
-      - failure
+        - success
+        - failure
 
 volumes:
-- name: shared
-  temp: {}
+  - name: shared
+    temp: {}
 
 ---
-kind: pipeline
 name: e2e-kubernetes-1.22
+kind: pipeline
+type: docker
 
 depends_on:
   - policeman
@@ -302,14 +313,14 @@ steps:
     image: quay.io/sighup/e2e-testing-drone-plugin:v0.13.0
     pull: always
     volumes:
-    - name: shared
-      path: /shared
-    depends_on: [ clone ]
+      - name: shared
+        path: /shared
+    depends_on: [clone]
     settings:
       action: custom-cluster-122
       pipeline_id: cluster-122
       local_kind_config_path: katalog/tests/kind/config.yml
-      cluster_version: '1.22.0'
+      cluster_version: "1.22.0"
       instance_path: /shared
       instance_size: 2-extra-large
       aws_default_region:
@@ -335,9 +346,9 @@ steps:
     image: quay.io/sighup/e2e-testing:1.1.0_0.7.0_3.1.1_1.9.4_1.23.5_3.8.7_4.21.1
     pull: always
     volumes:
-    - name: shared
-      path: /shared
-    depends_on: [ init ]
+      - name: shared
+        path: /shared
+    depends_on: [init]
     commands:
       - export KUBECONFIG=/shared/kube/kubeconfig-122
       - kubectl config view | yq ".clusters[0].cluster.server" | cut -d"/" -f3 | cut -d":" -f1 > node_ip
@@ -347,7 +358,7 @@ steps:
   - name: destroy
     image: quay.io/sighup/e2e-testing-drone-plugin:v0.13.0
     pull: always
-    depends_on: [ e2e ]
+    depends_on: [e2e]
     settings:
       action: destroy
       pipeline_id: cluster-122
@@ -371,16 +382,17 @@ steps:
         from_secret: dockerhub_password
     when:
       status:
-      - success
-      - failure
+        - success
+        - failure
 
 volumes:
-- name: shared
-  temp: {}
+  - name: shared
+    temp: {}
 
 ---
-kind: pipeline
 name: e2e-kubernetes-1.23
+kind: pipeline
+type: docker
 
 depends_on:
   - policeman
@@ -403,14 +415,14 @@ steps:
     image: quay.io/sighup/e2e-testing-drone-plugin:v0.13.0
     pull: always
     volumes:
-    - name: shared
-      path: /shared
-    depends_on: [ clone ]
+      - name: shared
+        path: /shared
+    depends_on: [clone]
     settings:
       action: custom-cluster-123
       pipeline_id: cluster-123
       local_kind_config_path: katalog/tests/kind/config.yml
-      cluster_version: '1.23.0'
+      cluster_version: "1.23.0"
       instance_path: /shared
       instance_size: 2-extra-large
       aws_default_region:
@@ -436,9 +448,9 @@ steps:
     image: quay.io/sighup/e2e-testing:1.1.0_0.7.0_3.1.1_1.9.4_1.23.5_3.8.7_4.21.1
     pull: always
     volumes:
-    - name: shared
-      path: /shared
-    depends_on: [ init ]
+      - name: shared
+        path: /shared
+    depends_on: [init]
     commands:
       - export KUBECONFIG=/shared/kube/kubeconfig-123
       - kubectl config view | yq ".clusters[0].cluster.server" | cut -d"/" -f3 | cut -d":" -f1 > node_ip
@@ -448,7 +460,7 @@ steps:
   - name: destroy
     image: quay.io/sighup/e2e-testing-drone-plugin:v0.13.0
     pull: always
-    depends_on: [ e2e ]
+    depends_on: [e2e]
     settings:
       action: destroy
       pipeline_id: cluster-123
@@ -472,16 +484,17 @@ steps:
         from_secret: dockerhub_password
     when:
       status:
-      - success
-      - failure
+        - success
+        - failure
 
 volumes:
-- name: shared
-  temp: {}
+  - name: shared
+    temp: {}
 
 ---
-kind: pipeline
 name: release
+kind: pipeline
+type: docker
 
 depends_on:
   - e2e-kubernetes-1.20
@@ -502,7 +515,7 @@ steps:
   - name: prepare-tar-gz
     image: alpine:latest
     pull: always
-    depends_on: [ clone ]
+    depends_on: [clone]
     commands:
       - tar -zcvf fury-kubernetes-kong-${DRONE_TAG}.tar.gz katalog/ LICENSE README.md
     when:
@@ -513,7 +526,7 @@ steps:
   - name: prepare-release-notes
     image: quay.io/sighup/fury-release-notes-plugin:3.7_2.8.4
     pull: always
-    depends_on: [ clone ]
+    depends_on: [clone]
     settings:
       release_notes_file_path: release-notes.md
     when:
