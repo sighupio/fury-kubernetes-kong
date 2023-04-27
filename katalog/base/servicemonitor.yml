@@ -6,8 +6,8 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata: # Labels and name of the ServiceMonitor
   labels:
-    app: ingress-kong-dp
-  name: ingress-kong-dp
+    app: proxy-kong
+  name: proxy-kong
   namespace: kong
 spec:
   endpoints: # which port of the pods to scrape
@@ -19,18 +19,18 @@ spec:
       - kong
   selector: # pod labels to match
     matchLabels:
-      app: ingress-kong-dp
+      app: proxy-kong
 ---
 kind: Service
 apiVersion: v1
 metadata:
   name: ingress-kong-metrics
   labels:
-    app: ingress-kong-dp
+    app: ingress-kong
   namespace: kong
 spec:
   selector:
-    app: ingress-kong-dp
+    app: ingress-kong
   ports:
     - name: metrics
       port: 8100

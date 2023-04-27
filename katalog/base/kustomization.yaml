@@ -11,22 +11,40 @@ resources:
   - grafana/
   - servicemonitor.yml
   - alerts.yaml
-  - kong-ingress-dbless-ds.yml
 
 patchesStrategicMerge:
   - service.yaml
-  - kong-ingress-dbless.yml
 
 secretGenerator:
   - name: kong-settings
     namespace: kong
     envs:
       - kong.env
+  - name: kong-ingress-settings
+    namespace: kong
+    envs:
+      - ingress.env
+
+patchesJson6902:
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: proxy-kong
+      namespace: kong
+    path: proxy-kong-patches.yml
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: ingress-kong
+      namespace: kong
+    path: ingress-kong-patches.yml
 
 images:
   - name: kong
     newName: registry.sighup.io/fury/kong
-    newTag: "2.8.1"
+    newTag: "3.2.2"
   - name: kong/kubernetes-ingress-controller
     newName: registry.sighup.io/fury/kong/kubernetes-ingress-controller
-    newTag: "2.3.1"
+    newTag: "2.9.3"

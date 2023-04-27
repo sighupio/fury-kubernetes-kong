@@ -2,25 +2,25 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
----
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
-    service.beta.kubernetes.io/aws-load-balancer-type: nlb
   name: kong-proxy
+  annotations:
+    $patch: delete
   namespace: kong
 spec:
+  type: NodePort
   ports:
   - name: proxy
     port: 80
-    protocol: TCP
     targetPort: 8000
+    nodePort: 31081
+    protocol: TCP
   - name: proxy-ssl
     port: 443
-    protocol: TCP
     targetPort: 8443
+    nodePort: 31444
+    protocol: TCP
   selector:
-    app: ingress-kong
-  type: LoadBalancer
+    app: ingress-kong-dp
