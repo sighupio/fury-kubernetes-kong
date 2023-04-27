@@ -46,11 +46,11 @@ steps:
     depends_on:
       - clone
     commands:
-      - kustomize build katalog/kong/kong-db > kong-db.yml
-      - kustomize build katalog/kong/kong-dbless > kong-dbless.yml
-      - kustomize build katalog/kong/kong-enterprise > kong-enterprise.yml
-      - kustomize build katalog/kong/kong-enterprise-hybrid > kong-enterprise-hybrid.yml
-      - kustomize build katalog/kong/kong-enterprise-k8s > kong-enterprise-k8s.yml
+      - kustomize build katalog/kong-db > kong-db.yml
+      - kustomize build katalog/kong-dbless > kong-dbless.yml
+      - kustomize build katalog/kong-enterprise > kong-enterprise.yml
+      - kustomize build katalog/kong-enterprise-hybrid > kong-enterprise-hybrid.yml
+      - kustomize build katalog/kong-enterprise-k8s > kong-enterprise-k8s.yml
 
   - &pluto
     name: check-deprecated-apis-kond-db
