@@ -20,19 +20,8 @@ secretGenerator:
     namespace: kong
     envs:
       - kong.env
-  - name: kong-ingress-settings
-    namespace: kong
-    envs:
-      - ingress.env
 
 patchesJson6902:
-  - target:
-      group: apps
-      version: v1
-      kind: Deployment
-      name: proxy-kong
-      namespace: kong
-    path: proxy-kong-patches.yml
   - target:
       group: apps
       version: v1
@@ -40,6 +29,7 @@ patchesJson6902:
       name: ingress-kong
       namespace: kong
     path: ingress-kong-patches.yml
+
 
 images:
   - name: kong

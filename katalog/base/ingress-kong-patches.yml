@@ -1,19 +1,8 @@
-- op: "replace"
+- op: "remove"
   path: "/spec/template/spec/containers/0/env"
-  value:
-    - name: POD_NAME
-      valueFrom:
-        fieldRef:
-          apiVersion: v1
-          fieldPath: metadata.name
-    - name: POD_NAMESPACE
-      valueFrom:
-        fieldRef:
-          apiVersion: v1
-          fieldPath: metadata.namespace
 
 - op: "add"
   path: "/spec/template/spec/containers/0/envFrom"
   value:
     - secretRef:
-        name: kong-ingress-settings
+        name: kong-settings
