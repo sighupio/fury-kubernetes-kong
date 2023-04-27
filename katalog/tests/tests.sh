@@ -11,7 +11,6 @@ set -o pipefail
 
 @test "Applying Monitoring CRDs" {
   info
-  kubectl create ns monitoring
   kubectl apply -f https://raw.githubusercontent.com/sighupio/fury-kubernetes-monitoring/v1.14.2/katalog/prometheus-operator/crd-servicemonitor.yml
   kubectl apply -f https://raw.githubusercontent.com/sighupio/fury-kubernetes-monitoring/v1.14.2/katalog/prometheus-operator/crd-rule.yml
 }
@@ -19,7 +18,7 @@ set -o pipefail
 @test "Deploy Kong Ingress Controller" {
   info
   deploy() {
-    kaction katalog/kong/kong-dbless apply
+    kaction katalog/kong-dbless apply
   }
   run deploy
   [[ "$status" -eq 0 ]]
