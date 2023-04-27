@@ -1,3 +1,7 @@
+# Copyright (c) 2022 SIGHUP s.r.l All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+
 - op: "remove"
   path: "/spec/template/spec/containers/0/env"
 
@@ -6,3 +10,18 @@
   value:
     - secretRef:
         name: kong-settings
+
+- op: "add"
+  path: "/spec/template/spec/affinity"
+  value:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: "app"
+                  operator: In
+                  values:
+                    - ingress-kong
+            topologyKey: "kubernetes.io/hostname"
