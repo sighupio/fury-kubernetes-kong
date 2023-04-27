@@ -1,0 +1,54 @@
+# Copyright (c) 2022 SIGHUP s.r.l All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ingress-kong
+  name: ingress-kong
+  namespace: kong
+spec:
+  template:
+    spec:
+      initContainers:
+        - env:
+            - name: KONG_LICENSE_DATA
+              valueFrom:
+                secretKeyRef:
+                  key: license
+                  name: kong-enterprise-license
+          envFrom:
+            - secretRef:
+                name: kong-settings
+            - secretRef:
+                name: kong-settings-cp
+          image: kong
+          name: wait-for-migrations
+      containers:
+        - name: ingress-controller
+          $patch: delete
+        - name: proxy
+          envFrom:
+            - secretRef:
+                name: kong-settings
+            - secretRef:
+                name: kong-settings-dp
+          env:
+            - name: KONG_LICENSE_DATA
+              valueFrom:
+                secretKeyRef:
+                  key: license
+                  name: kong-enterprise-license
+          ports:
+            - containerPort: 8000
+              name: proxy
+              protocol: TCP
+            - containerPort: 8443
+              name: proxy-ssl
+              protocol: TCP
+            - containerPort: 8100
+              name: metrics
+              protocol: TCP

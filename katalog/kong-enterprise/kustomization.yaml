@@ -1,0 +1,48 @@
+# Copyright (c) 2022 SIGHUP s.r.l All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../kong-db
+  - kong-enterprise-additional-services.yaml
+  - kong-enterprise-statefulset-cp.yaml
+  - servicemonitor-cp.yml
+
+patchesStrategicMerge:
+  - kong-enterprise-dp.yaml
+  - validation-service.yaml
+  - alerts.yaml
+  - kong-enterprise-migrations.yaml
+
+images:
+  - name: kong
+    newName: registry.sighup.io/fury/kong/kong-gateway
+    newTag: 3.2.2.1
+  - name: kong/kubernetes-ingress-controller
+    newName: registry.sighup.io/fury/kong/kubernetes-ingress-controller
+    newTag: "2.9.3"
+  - name: registry.sighup.io/fury/kong
+    newName: registry.sighup.io/fury/kong/kong-gateway
+    newTag: 3.2.2.1
+
+secretGenerator:
+  - name: kong-settings
+    behavior: merge
+    namespace: kong
+    envs:
+      - kong-common.env
+  - name: kong-settings-cp
+    namespace: kong
+    envs:
+      - kong-cp.env
+  - name: kong-settings-dp
+    namespace: kong
+    envs:
+      - kong-dp.env
+  - name: kong-enterprise-license
+    namespace: kong
+    files:
+      - license=secrets/license.json
