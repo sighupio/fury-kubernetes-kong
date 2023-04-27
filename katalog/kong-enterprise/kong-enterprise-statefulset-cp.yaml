@@ -28,7 +28,7 @@ spec:
     spec:
       initContainers:
         - command:
-            - /bin/sh
+            - /bin/bash
             - -c
             - while true; do kong migrations list; if [[ 0 -eq $? ]]; then exit 0; fi;
               sleep 2;  done;
