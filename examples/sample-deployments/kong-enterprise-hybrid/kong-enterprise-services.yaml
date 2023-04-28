@@ -10,20 +10,7 @@ metadata:
   namespace: kong
 spec:
   externalTrafficPolicy: Local
-  ports:
-    - name: portal
-      nodePort: 30803
-      port: 8003
-      protocol: TCP
-      targetPort: 8003
-    - name: portal-api
-      nodePort: 30804
-      port: 8004
-      protocol: TCP
-      targetPort: 8004
-  selector:
-    app: ingress-kong-dp
-  type: NodePort
+  type: LoadBalancer
 ---
 apiVersion: v1
 kind: Service
@@ -32,18 +19,5 @@ metadata:
   namespace: kong
 spec:
   externalTrafficPolicy: Local
-  ports:
-  - name: admin
-    nodePort: 30801
-    port: 8001
-    protocol: TCP
-    targetPort: 8001
-  - name: manager
-    nodePort: 30802
-    port: 8002
-    protocol: TCP
-    targetPort: 8002
-  selector:
-    app: ingress-kong-cp
-  type: NodePort
+  type: LoadBalancer
 
