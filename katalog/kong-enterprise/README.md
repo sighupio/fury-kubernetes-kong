@@ -52,14 +52,7 @@ bases:
 
 3. Inspect the download packages under `./vendor/katalog/kong`.
 
-4. Define a `kustomization.yaml` that includes the `./vendor/katalog/kong` directory as resource.
-
-```yaml
-resources:
-  - ./vendor/katalog/kong-db
-```
-
-5. To deploy a working kong enterprise you need to patch the following :
+4. To deploy a working kong enterprise you need to patch the following :
 
 ```yaml
 resources:
@@ -143,7 +136,7 @@ KONG_ADMIN_API_URI=http://manager.example.com:8080
 KONG_ADMIN_GUI_URL=http://manager.example.com
 ```
 
-6. To deploy the packages to your cluster, execute:
+5. To deploy the packages to your cluster, execute:
 
 ```bash
 kustomize build . | kubectl apply -f -
