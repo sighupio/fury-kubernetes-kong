@@ -21,8 +21,6 @@ add-on for [Kubernetes Fury Distribution (KFD)][kfd-repo].
 | `1.23.x`           | :white_check_mark: | No known issues                                     |
 | `1.24.x`           | :white_check_mark: | No known issues                                     |
 | `1.25.x`           | :white_check_mark: | No known issues                                     |
-| `1.26.x`           | :white_check_mark: | No known issues                                     |
-
 
 Check the [compatibility matrix][compatibility-matrix] for additional information about previous releases of the modules.
 
