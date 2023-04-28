@@ -15,7 +15,7 @@ Proxy.
 ## Image repository and tag
 
 * Kong image: `docker.io/library/kong:3.2.2`
-* Kong ingress controller image: `docker.io/kong/kubernetes-ingress-controller:2.9.3
+* Kong ingress controller image: `docker.io/kong/kubernetes-ingress-controller:2.9.3`
 
 ## Configuration
 
