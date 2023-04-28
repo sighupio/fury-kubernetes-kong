@@ -26,7 +26,7 @@ The Kong Data Plane is deployed as a Deployment, all the Kong Data Plane reads t
 - The environment variables as envFrom a secret instead of being env definition in the container
 - There are three secrets used to configure kong:
   - `kong-settings` common configurations for all the components, control plane and data plane
-  - `kong-settings-cp` dedicated configurations for control planes 
+  - `kong-settings-cp` dedicated configurations for control planes
   - `kong-settings-dp` dedicated configurations for data planes
 - A default podAntiAffinity on ingress-kong pods
 - Additional serviceMonitor for the control plane component
@@ -36,6 +36,8 @@ The Kong Data Plane is deployed as a Deployment, all the Kong Data Plane reads t
 - `kong-portal` and `kong-admin` services are not exposed by default
 
 ## Deployment
+
+> Note :warning:: in this example we are showing some of the configurations that should be used in a EKS cluster with the ALB controller installed, and these are not full production grade settings.
 
 1. List the packages you want to deploy and their version in a `Furyfile.yml`
 
@@ -146,8 +148,6 @@ KONG_ADMIN_GUI_URL=http://manager.example.com
 ```bash
 kustomize build . | kubectl apply -f -
 ```
-
-> Note :warning:: in this example we are showing some of the configurations that should be used in a EKS cluster with the ALB controller installed, and these are not full production grade settings.
 
 ## Alerts
 
