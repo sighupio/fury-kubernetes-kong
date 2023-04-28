@@ -2,12 +2,12 @@
 
 To maintain the base package, you should follow these steps.
 
-First of all, download the manifests from the [Kong/kubernetes-ingress-controller]() repository, for example from
-https://github.com/Kong/kubernetes-ingress-controller/blob/v2.9.3/deploy/single/all-in-one-dbless-legacy.yaml .
+First of all, download the manifests from the [Kong/kubernetes-ingress-controller](https://github.com/Kong/kubernetes-ingress-controller) repository, for example from
+[all-in-one-dbless-legacy.yaml](https://github.com/Kong/kubernetes-ingress-controller/blob/v2.9.3/deploy/single/all-in-one-dbless-legacy.yaml) .
 
 Check the differences between [upstream/all-in-one-dbless-legacy.yaml](upstream/all-in-one-dbless-legacy.yaml) file.
 
-Verify that the patching layer we are doing is still valid. 
+Verify that the patching layer we are doing is still valid.
 
 What we are customizing:
 

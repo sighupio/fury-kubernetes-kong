@@ -22,8 +22,8 @@ Proxy.
 - The environment variables as envFrom a secret instead of being env definition in the container
 - A default podAntiAffinity on ingress-kong pods
 - Service is exposed as `NodePort` with  `externalTrafficPolicy: Local` on ports:
-    - `31081` for HTTP
-    - `31444` for HTTPS
+  - `31081` for HTTP
+  - `31444` for HTTPS
 
 ## Deployment
 

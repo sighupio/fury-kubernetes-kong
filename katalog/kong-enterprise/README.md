@@ -31,8 +31,8 @@ The Kong Data Plane is deployed as a Deployment, all the Kong Data Plane reads t
 - A default podAntiAffinity on ingress-kong pods
 - Additional serviceMonitor for the control plane component
 - `kong-proxy` Service is exposed as `NodePort` with  `externalTrafficPolicy: Local` on ports:
-    - `31081` for HTTP
-    - `31444` for HTTPS
+  - `31081` for HTTP
+  - `31444` for HTTPS
 - `kong-portal` and `kong-admin` services are not exposed by default
 
 ## Deployment
@@ -147,7 +147,7 @@ KONG_ADMIN_GUI_URL=http://manager.example.com
 kustomize build . | kubectl apply -f -
 ```
 
-> Note :warning:: in this example we are showing the configurations that should be used in a EKS cluster with the ALB controller installed, and these are not full production grade settings.
+> Note :warning:: in this example we are showing some of the configurations that should be used in a EKS cluster with the ALB controller installed, and these are not full production grade settings.
 
 ## Alerts
 

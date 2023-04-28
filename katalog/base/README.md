@@ -11,8 +11,8 @@ In this package we are applying some customization from the upstream manifests:
 - Setting the environment variables as envFrom a secret instead of being env definition in the container
 - Applying a default podAntiAffinity
 - Service is exposed as `NodePort` on ports:
-    - `31081` for HTTP
-    - `31444` for HTTPS
+  - `31081` for HTTP
+  - `31444` for HTTPS
 - Set `externalTrafficPolicy: Local` on kong service
 
 See [MAINTENANCE.md](MAINTENANCE.md) to know how to maintain the package.
