@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
         - name: kong-migrations
-          command: [ "/bin/sh", "-c", "kong migrations up" ]
+          command: [ "/bin/bash", "-c", "kong migrations up" ]
       restartPolicy: OnFailure
 ```
 
@@ -58,6 +58,6 @@ spec:
     spec:
       containers:
         - name: kong-migrations
-          command: [ "/bin/sh", "-c", "kong migrations finish" ]
+          command: [ "/bin/bash", "-c", "kong migrations finish" ]
       restartPolicy: OnFailure
 ```
