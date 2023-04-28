@@ -19,7 +19,7 @@ directly with a TLS connection.
 
 ## Image repository and tag
 
-* Kong image: `docker.io/library/kong:3.2.2`
+* Kong image: `docker.io/kong/kong-gateway:3.2.2.1`
 * Kong ingress controller image: `docker.io/kong/kubernetes-ingress-controller:2.9.3`
 
 ## Configuration
@@ -39,7 +39,7 @@ directly with a TLS connection.
 
 ## Deployment
 
-> Note :warning:: in this example we are showing some of the configurations that should be used in a EKS cluster with the ALB controller installed, and these are not full production grade settings.
+> Note :warning:: in this example we are showing some of the basic configurations that should be used in a EKS cluster with the ALB controller installed, and these are not full production grade settings.
 
 1. List the packages you want to deploy and their version in a `Furyfile.yml`
 
@@ -62,7 +62,7 @@ openssl req -new -x509 -nodes -newkey ec:<(openssl ecparam -name secp384r1) \
   -days 1095 -subj "/CN=kong_clustering"
 ```
 
-5. To deploy a working kong enterprise you need to patch the following :
+5. To deploy a working kong enterprise you need to define a `kustomization.yaml` file and patch the following :
 
 ```yaml
 resources:

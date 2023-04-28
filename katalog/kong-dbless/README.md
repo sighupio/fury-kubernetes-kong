@@ -27,6 +27,8 @@ Proxy.
 
 ## Deployment
 
+> Note :warning:: in this example we are showing only basic configurations
+
 1. List the packages you want to deploy and their version in a `Furyfile.yml`
 
 ```yaml

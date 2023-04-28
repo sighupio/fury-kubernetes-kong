@@ -18,7 +18,7 @@ The Kong Data Plane is deployed as a Deployment, all the Kong Data Plane reads t
 
 ## Image repository and tag
 
-* Kong image: `docker.io/library/kong:3.2.2`
+* Kong image: `docker.io/kong/kong-gateway:3.2.2.1`
 * Kong ingress controller image: `docker.io/kong/kubernetes-ingress-controller:2.9.3`
 
 ## Configuration
@@ -37,7 +37,7 @@ The Kong Data Plane is deployed as a Deployment, all the Kong Data Plane reads t
 
 ## Deployment
 
-> Note :warning:: in this example we are showing some of the configurations that should be used in a EKS cluster with the ALB controller installed, and these are not full production grade settings.
+> Note :warning:: in this example we are showing some of the basic configurations that should be used in a EKS cluster with the ALB controller installed, and these are not full production grade settings.
 
 1. List the packages you want to deploy and their version in a `Furyfile.yml`
 
@@ -52,7 +52,7 @@ bases:
 
 3. Inspect the download packages under `./vendor/katalog/kong`.
 
-4. To deploy a working kong enterprise you need to patch the following :
+4. To deploy a working kong enterprise you need to define a `kustomization.yaml` file and patch the following :
 
 ```yaml
 resources:
